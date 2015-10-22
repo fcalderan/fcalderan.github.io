@@ -1,0 +1,16 @@
+# humanstxt.org/
+# The humans responsible & technology colophon
+
+# TEAM
+
+    Project Manager         :
+    Art Director            : 
+    Developer               : Fabrizio Calderan
+
+# THANKS
+
+# TECHNOLOGY COLOPHON
+
+    Standards: HTML5, CSS, javascript
+    Components: jQuery
+    Software: Ruby (SASS, Jekyll), NodeJS (gulpJS)

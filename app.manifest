@@ -1,0 +1,29 @@
+CACHE MANIFEST
+
+CACHE:
+CNAME
+cookie-policy.html
+index.html
+css/common.css
+css/cv.css
+images/me-print.jpg
+images/me-print.webp
+images/me.jpg
+images/me.webp
+images/me3-print.jpg
+images/me3-print.webp
+images/me3.jpg
+images/me3.webp
+images/pin.svg
+js/main.js
+styleguide/index.html
+css/vendors/prism.css
+js/vendors/prism.js
+
+NETWORK:
+*
+
+SETTINGS:
+prefer-online
+
+# hash: 0f49eb5c064d2930b6823da53e5a508cb8fbe419d8b82d516cadadf8294536bf
