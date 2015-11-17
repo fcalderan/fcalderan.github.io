@@ -80,7 +80,6 @@
 
         </main>
 
-        <script src="./js/gpgc_core.js"></script>
         <div class="gpgc-new-section gpgc-comments-font gpgc-hidden" id="gpgc_all_comments">
         </div>
 
@@ -134,26 +133,26 @@
         </div>
 
 
+        <!-- :: layout script -->
+        <script src="./js/main.js" async></script>
+        <script src="./js/gpgc_core.js"></script>
+
         <script>
             var gpgc = {
                 new_comments_disabled: new Boolean(false).valueOf() || new Boolean().valueOf(),
-                site_url: "http://fabriziocalderan.me/",
+                site_url: "http://fc.prod",
                 page_path: "comments.html",
-                issue_title: "First test comment",
+                issue_title: "",
                 repo_id: "fcalderan/fcalderan.github.io",
                 use_show_action: false,
                 github_application_client_id: "ed636cc59e41f0ff8630",
                 github_application_code_authenticator_url: "https://fcsite-comments.herokuapp.com/authenticate/",
-                github_application_login_redirect_url: "http://fabriziocalderan.me/gpgc.html",
+                github_application_login_redirect_url: "http://fc.dev/gpgc.html",
                 enable_diagnostics: false,
             };
 
             gpgc_main();
         </script>
-
-
-        <!-- :: layout script -->
-        <script src="./js/main.js" async></script>
 
 
     </body>
