@@ -2,13 +2,10 @@ CACHE MANIFEST
 
 CACHE:
 CNAME
-comments.html
 cookie-policy.html
-gpgc.html
 index.html
 css/common.css
 css/cv.css
-css/gpgc.css
 images/me-print.jpg
 images/me-print.webp
 images/me.jpg
@@ -18,10 +15,11 @@ images/me3-print.webp
 images/me3.jpg
 images/me3.webp
 images/pin.svg
-js/gpgc_core.js
 js/main.js
 styleguide/index.html
 css/vendors/prism.css
+js/vendors/bliss.min.js
+js/vendors/es6-promise.min.js
 js/vendors/prism.js
 
 NETWORK:
@@ -30,4 +28,4 @@ NETWORK:
 SETTINGS:
 prefer-online
 
-# hash: d61cb2ddc15f03fee8e59f7b86177b2fd5671ca40a1a93a42b0577881a2e540b
+# hash: 908b0894e94b773d07e5f6913194eceac919bd003b576696b1aadfbe914785fb
