@@ -1,0 +1,197 @@
+body {
+  font-family: 'Indie Flower', arial;
+}
+
+#wrapper {
+  margin: 0 auto;
+  width: 980px;
+  color: #434343;
+}
+
+h1,h2 { font-weight: normal; }
+h1 { font-size: 3.4em; color: #92b8df; margin: 0.3em 0 0 0; }
+h2 { font-size: 1.6em; color: #525158; margin: 1.2em 0 0 0; }
+
+#scene {
+  position: relative;
+  overflow: hidden;
+  height: 180px;
+  width : 100%;
+  margin: 0 auto;
+  border: 1px #d8d8d8 solid;
+  box-shadow: 0 3px 8px #d8d8de;
+  background: url(../images/cherry.png),
+              url(../images/dots.png),
+              url(../images/dot.png);
+  background-position: 360px center, 8px center, 120px center;
+  background-repeat: no-repeat, repeat-x, no-repeat;
+  background-color: #f8f8f8;
+}
+
+#scene:before {
+  content: "> 1024";
+  padding : 3px 8px;
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 0;
+  font: 14px monospace;
+  background: rgba(230,230,230, .85);
+  color: #747474;
+}
+
+
+
+#ghost, #pacman {
+  position: absolute;
+  z-index : 1;
+}
+
+#pacman {
+  width: 100%;
+  height: 96px;
+  left  : 850px;
+  top     : 42px;
+  -webkit-transition: left 2.5s;
+  transition: left 2.5s;
+  display: block;
+  background: #f8f8f8;
+}
+
+#pacman-body {
+  position: relative;
+  margin: 3px 0 0 3px;
+  left : -50px;
+  width: 90px;
+  height: 90px;
+  display: block;
+  -webkit-transition: left 1.8s;
+  transition: left 1.8s;
+}
+
+#pacman-body:after, #pacman-body:before {
+  width: 0;
+  height: 0px;
+  display: block;
+  position: absolute;
+  border: 45px #fcfc07 solid;
+  content: "";
+}
+#pacman-body:after {
+  bottom: 0;
+  border-radius: 0 0 50px 50px;
+  border-top: 0;
+  transform-origin: center top;
+  -moz-animation: jaw .5s linear 0s infinite;
+}
+
+#pacman-body:before {
+  border-radius: 50px 50px 0 0;
+  border-bottom: 0;
+  top:0;
+  transform-origin: center bottom;
+  animation: mandible .5s linear 0s infinite;
+}
+
+@-moz-keyframes mandible {
+  0%  { transform : rotate(0deg); } 
+  50%  { transform : rotate(45deg); } 
+  100%  { transform : rotate(0deg); } 
+}
+@-moz-keyframes jaw {
+  0%  { transform : rotate(0deg); } 
+  50%  { transform : rotate(-45deg); } 
+  100%  { transform : rotate(0deg); } 
+}
+
+
+#end {
+    position: absolute;
+    z-index : 2;
+    top     : 0;
+    left    : 0;
+    width: 100%;
+    height: 100%;
+    opacity : 0;
+    -webkit-transition: opacity 1s linear 2s;
+    transition: opacity 1s linear 2s;
+    background: rgba(240,240,240, 1);
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    padding: 10px 30px;
+}
+
+@media all and (min-width: 1280px) {
+  #scene:before { content: "> 1280"; }
+  #end { display : none; }
+}
+
+
+
+#ghost {
+  top  : 39px;
+  width: 96px;
+  height: 96px;
+  left  : 1024px;
+  background-image: url(../images/ghost.png);
+  background-repeat: no-repeat;
+  background-position: top left;
+  -webkit-transition: left 2.2s;
+  transition: left 2.2s;
+  -webkit-animation: wave 1s linear 0s infinite;
+  animation: wave 1s linear 0s infinite;
+}
+
+@keyframes wave {
+  0% {  margin-top: 0; margin-left: 0}
+  25% { margin-top: 2px; margin-left: 2px}
+  50% {  margin-top: 0; margin-left: -3x}
+  75% { margin-top: -2px;  margin-left: 2px}
+  50% {  margin-top: 0; margin-left: 0}
+}
+@-webkit-keyframes wave {
+  0% {  margin-top: 0; }
+  25% { margin-top: 2px; }
+  50% {  margin-top: 0; }
+  75% { margin-top: -2px; }
+  50% {  margin-top: 0; }
+}
+
+
+@media all and (max-width: 1024px) {
+  #scene:before { content: "1024"; }
+  #wrapper { width: 96%; }
+  #ghost { left : 85%; }
+  #pacman { left : 55%; }
+}
+
+
+@media all and (max-width: 800px) {
+  #scene:before { content: "800"; }
+  #ghost { left : 70%;   background-position: top center;  }
+  #pacman { left : 45%; }
+}
+
+@media all and (max-width: 640px) {
+  #scene:before { content: "640"; }
+  #ghost { left : 50%; }
+  #pacman { left : 28%; }
+}
+
+
+@media all and (max-width: 480px) {
+  #scene:before { content: "480"; }
+  #end { display: block; opacity: 1;}
+  #pacman { left: 15%;}
+  #pacman-body {
+    -webkit-transition: left 2.5s linear 1s;
+    transition: left 2.2s linear 1s;
+    left :300%;
+    transform : rotate(180deg);
+  }
+  #ghost {
+    -webkit-transition: left 2s  linear 0.5s;
+    transition: left 2s linear 0.5s;
+    left: 200%; background-position: top right; }
+}

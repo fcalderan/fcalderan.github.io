@@ -1,0 +1,32 @@
+RewriteEngine on
+FileETag -INode MTime Size
+
+AddType audio/x-wav .wav
+
+<IfModule mod_expires.c>
+    ExpiresActive On
+    ExpiresByType text/html                     "access plus 6 hours"
+    ExpiresByType text/plain                    "access plus 6 hours"
+    ExpiresByType image/ico                     "access plus 2 months"
+    ExpiresByType image/png                     "access plus 2 weeks"
+    ExpiresByType application/javascript        "access plus 3 months"
+    ExpiresByType application/x-javascript      "access plus 3 months"
+    ExpiresByType text/javascript               "access plus 3 months"
+    ExpiresByType text/css			            "access plus 3 months"
+    ExpiresByType audio/wav					    "access plus 3 months"
+    ExpiresByType audio/wave   			    	"access plus 3 months"
+    ExpiresByType audio/x-wav				    "access plus 3 months"
+</IfModule>
+
+# GZip compression
+SetOutputFilter DEFLATE
+BrowserMatch ^Mozilla/4 gzip-only-text/html
+BrowserMatch ^Mozilla/4\.0[678] no-gzip
+BrowserMatch \bMSIE !no-gzip !gzip-only-text/html
+BrowserMatch \bMSI[E] !no-gzip !gzip-only-text/html
+
+# Don't compress images and other content
+SetEnvIfNoCase Request_URI \.(?:gif|jpe?g|png|pdf|swf|wav)$ no-gzip dont-vary
+
+# Make sure proxies don't deliver the wrong content
+Header append Vary User-Agent env=!dont-vary

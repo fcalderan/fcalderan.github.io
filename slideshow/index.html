@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html class="nojs">
+  <head>
+    <title>A SASS mixin for a pure CSS3 Slideshow</title>
+    <meta charset="utf-8">
+
+    <link rel="image_src" href="http://www.fabriziocalderan.it/css3slideshow/venice-ponte-accademia.jpg" />
+   
+    <style>
+
+        /* generated with sassmeister.com */
+
+        .slideshow { position: relative; cursor: pointer; list-style: none; }
+        .slideshow li { position: absolute; z-index: 4; top: 0; left: 0; -webkit-animation: CSS3slideshow 18s ease 0s infinite; -moz-animation: CSS3slideshow 18s ease 0s infinite; -o-animation: CSS3slideshow 18s ease 0s infinite; animation: CSS3slideshow 18s ease 0s infinite; }
+        .slideshow li:nth-child(2) { z-index: 3; -webkit-animation-delay: 4.5s; -moz-animation-delay: 4.5s; -o-animation-delay: 4.5s; animation-delay: 4.5s; }
+        .slideshow li:nth-child(3) { z-index: 2; -webkit-animation-delay: 9s; -moz-animation-delay: 9s; -o-animation-delay: 9s; animation-delay: 9s; }
+        .slideshow li:nth-child(4) { z-index: 1; -webkit-animation-delay: 13.5s; -moz-animation-delay: 13.5s; -o-animation-delay: 13.5s; animation-delay: 13.5s; }
+        .slideshow:hover li { -webkit-animation-play-state: paused; -moz-animation-play-state: paused; -o-animation-play-state: paused; animation-play-state: paused; }
+        @-webkit-keyframes CSS3slideshow { 13.89%, 100% { opacity: 1; }
+          25%, 88.89% { opacity: 0; } }
+        @-moz-keyframes CSS3slideshow { 13.89%, 100% { opacity: 1; }
+          25%, 88.89% { opacity: 0; } }
+        @-o-keyframes CSS3slideshow { 13.89%, 100% { opacity: 1; }
+          25%, 88.89% { opacity: 0; } }
+        @keyframes CSS3slideshow { 13.89%, 100% { opacity: 1; }
+          25%, 88.89% { opacity: 0; } }
+
+    </style>
+    <link href='http://fonts.googleapis.com/css?family=Lato' rel='stylesheet'>
+    <link href='http://fonts.googleapis.com/css?family=Montserrat' rel='stylesheet'>
+    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="prism.css" />
+</head>
+
+<body>
+
+    <main role="main">
+
+        <h1>A SASS mixin for a pure CSS3 Slideshow</h1>
+
+        <p>How to easily build a pure CSS3 slideshow with a SASS mixin (<em>tested on v.3.3.6</em>) <br/>(if you're 
+            curious on how the responsive behaviour or the last example of this page were realized, feel free to poke 
+            around the style) 
+        </p>
+
+
+        <ul role="presentation" class="slideshow">
+            <li><img src="venice-canal-grande.jpg" width="480" height="360" alt="A beautiful sight of Canal Grande"/></li>
+            <li><img src="venice-sanmarco-lion.jpg" width="480" height="360" alt="The San Marco's winged lion" /></li>
+            <li><img src="venice-fondaco-turchi.jpg" width="480" height="360" alt="Museum of Natural History" /></li>
+            <li><img src="venice-ponte-accademia.jpg" width="480" height="360" alt="The sight from Academy's Bridge"/></li>
+        </ul>
+
+
+        <section>
+            <h2>Markup and SASS code</h2>
+            <pre><code class="language-markup">&lt;ul role="presentation" class="slideshow">
+    &lt;li>&lt;img src="venezia-canal-grande.jpg" width="480" height="360" alt="..."/>&lt;/li>
+    &lt;li>&lt;img src="venezia-sanmarco-lion.jpg" width="480" height="360" alt="..." />&lt;/li>
+    &lt;li>&lt;img src="venezia-fondaco-turchi.jpg" width="480" height="360" alt="..." />&lt;/li>
+    &lt;li>&lt;img src="venezia-ponte-accademia.jpg" width="480" height="360" alt="..."/>&lt;/li>
+&lt;/ul></code></pre>
+
+<pre><code class="language-scss">.slideshow {
+    @include slideshow((
+        images     : 4,                 // Amount of images in the slideshow
+        duration   : 4.5s,              // Time of visibility of each image 
+        transition : 2s,                // Transition time (with transition < duration)
+        easing     : ease,              // Easing type
+        repeat     : infinite           // 1,2,3, ... , infinite
+    ));
+}</code></pre>
+        </section>
+
+
+        <section>
+            
+            <h2>How does it work?</h2>
+
+            <p>
+                Basically all list-items run the same animation but each element has a different <code>animation-delay</code>.
+                The time of visibility includes the time of transition, so in the above example <code>4.5s</code> it's the 
+                overall time of visibility of a single list-item: this means that its opacity is zero after that amount of time 
+                (therefore the transition starts before).
+            </p>
+            <p>
+                On slideshow mouseover the animation is paused without javascript, thanks to the 
+                <code>animation-play-state</code> property. On the mouseout event the animation resumes
+                from the time where it was paused. See the improved example further down in this page to see how to
+                give the user a better experience and clearly show the playback state of the animation.
+            </p>
+        </section>
+
+
+        <section>
+            
+            <h2>SCSS code of Slideshow <code>Mixin</code></h2>
+
+            <pre><code class="language-scss">@mixin slideshow($settings) { 
+    $images     : map-get($settings, images); 
+    $duration   : map-get($settings, duration);
+    $transition : map-get($settings, transition);
+    $easing     : map-get($settings, easing);
+    $repeat     : map-get($settings, repeat);
+    
+    // total duration (in seconds) 
+    $totalDuration      : $images * $duration;
+    $animationSettings  : CSS3slideshow #{$totalDuration} #{$easing} 0s #{$repeat};
+    $vendorsList        : (-webkit-, -moz-, -o-, '');
+
+    position   : relative;
+    cursor     : pointer;
+    list-style : none;
+
+    li {
+        position : absolute;  
+        z-index  : $images; 
+        top      : 0;
+        left     : 0;
+        @each $vendor in $vendorsList {
+            #{$vendor}animation: #{$animationSettings};
+        }  
+
+        @for $i from 2 through $images {
+
+            &amp;:nth-child(#{$i}) { 
+                z-index: #{$images - $i + 1}; 
+                @each $vendor in $vendorsList {
+                    #{$vendor}animation-delay: #{$duration * ($i - 1)};
+                }
+            }
+
+        }
+    }
+
+    &amp;:hover {
+        li {
+            @each $vendor in $vendorsList {
+                #{$vendor}animation-play-state: paused;
+            }  
+        }
+    }
+
+    @at-root {
+
+        $endEffect: 100% / $images;
+        $timeEffect: round(($transition * 100% / $totalDuration) * 100)/100;
+        $startEffect: $endEffect - $timeEffect;
+
+        @include setKeyframes(CSS3slideshow) {
+          #{$startEffect}, 100% { opacity: 1; }
+          #{$endEffect}, #{100% - $timeEffect} { opacity: 0; }
+        }        
+
+    } 
+  
+}
+
+
+@mixin setKeyframes($animationName) {
+
+    @-webkit-keyframes #{$animationName} { @content; }
+    @-moz-keyframes #{$animationName}    { @content; }
+    @-o-keyframes #{$animationName}      { @content; }
+    @keyframes #{$animationName}         { @content; }
+
+}</code></pre>
+        </section>
+
+        
+        
+
+
+        <section>
+
+            <h2>CSS code generated from mixin inclusion</h2>
+            <small>(Vendor prefixes omitted for brevity)</small> 
+
+            <pre><code class="language-css">.slideshow { 
+    position   : relative;  
+    cursor     : pointer;
+    list-style : none;
+}
+
+.slideshow li { 
+    position : absolute; 
+    z-index  : 4;
+    top      : 0; 
+    left     : 0;
+    animation: CSS3slideshow 18s ease 0s infinite;  
+}
+
+.slideshow li:nth-child(2) { 
+    z-index: 3; 
+    animation-delay: 4.5s; 
+}
+
+.slideshow li:nth-child(3) { 
+    z-index: 2; 
+    animation-delay: 9s; 
+}
+
+.slideshow li:nth-child(4) { 
+    z-index: 1; 
+    animation-delay: 13.5s; 
+}
+
+.slideshow:hover li { 
+    animation-play-state: paused; 
+}
+
+@keyframes CSS3slideshow { 
+    13.89%, 100% { opacity: 1; }
+    25%, 88.89%  { opacity: 0; } 
+}</code></pre>   
+            
+        </section>
+
+
+
+
+
+
+        <section>
+            <h2>An improved example</h2>
+             <small>(With a caption for each image and a visual playback state on hover)</small>
+             <ul role="presentation" class="improved slideshow">
+                <li>
+                    <figure>
+                        <img src="venice-canal-grande.jpg" width="480" height="360" alt="A beautiful sight of Canal Grande"/>
+                        <figcaption>
+                            A beautiful sight of Canal Grande
+                        </figcaption> 
+                    </figure>
+                </li>
+                <li>
+                    <figure>
+                        <img src="venice-sanmarco-lion.jpg" width="480" height="360" alt="The San Marco's winged lion" />
+                        <figcaption>
+                            The San Marco's winged lion
+                        </figcaption>
+                    </figure>
+                </li>
+                <li>
+                    <figure>
+                        <img src="venice-fondaco-turchi.jpg" width="480" height="360" alt="Museum of Natural History" />
+                        <figcaption>
+                            Museum of Natural History
+                        </figcaption>
+                    </figure>
+
+                </li>
+                <li>
+                    <figure>
+                        <img src="venice-ponte-accademia.jpg" width="480" height="360" alt="The sight from Academy's Bridge"/>
+                        <figcaption>
+                            The sight from Academy's Bridge
+                        </figcaption>
+                    </figure>
+                </li>
+            </ul>
+        </section>
+
+        <section>
+            <h2>About me</h2>
+            <address>
+                Author: <em>Fabrizio Calderan</em><br />
+                Twitter: <a href="http://twitter.com/fcalderan"><em>fcalderan</em></a><br />
+                Linkedin: <a href="http://www.linkedin.com/in/fabriziocalderan">
+                <em>http://www.linkedin.com/in/fabriziocalderan</em></a>
+            </address>
+
+            
+           
+        </section>
+
+    </main>
+  
+    <script src="prism.js"></script>
+
+    
+  </body>
+</html>

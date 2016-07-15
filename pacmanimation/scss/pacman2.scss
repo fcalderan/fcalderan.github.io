@@ -1,0 +1,665 @@
+@mixin box-sizing($box) {
+    -webkit-box-sizing: $box;
+       -moz-box-sizing: $box;
+            box-sizing: $box;
+}
+
+@mixin border-radius($val) {
+    -webkit-border-radius: $val;
+       -moz-border-radius: $val;
+            border-radius: $val;
+}
+
+@mixin box-shadow($val) {
+    -webkit-box-shadow: $val;
+       -moz-box-shadow: $val;
+            box-shadow: $val;
+}
+
+@mixin transition($val) {
+    -webkit-transition: #{$val};
+       -moz-transition: #{$val};
+        -ms-transition: #{$val};
+         -o-transition: #{$val};
+            transition: #{$val};
+}
+
+@mixin animation($val) {
+    -webkit-animation: #{$val};
+       -moz-animation: #{$val};
+        -ms-animation: #{$val};
+         -o-animation: #{$val};
+            animation: #{$val};
+}
+
+@mixin transform($val) {
+    -webkit-transform: $val;
+       -moz-transform: $val;
+        -ms-transform: $val;
+         -o-transform: $val;
+            transform: $val;
+}
+
+@mixin transform-origin($val) {
+    -webkit-transform-origin: $val;
+       -moz-transform-origin: $val;
+        -ms-transform-origin: $val;
+         -o-transform-origin: $val;
+            transform-origin: $val;
+}
+
+@mixin keyframes($val) {
+    @-webkit-keyframes #{$val} { @content; }
+    @-moz-keyframes #{$val} { @content; }
+    @-ms-keyframes #{$val} { @content; }
+    @-o-keyframes #{$val} { @content; }
+    @keyframes #{$val} { @content; }
+
+}
+
+@mixin minwidth($width) {
+    @media screen and (min-width: #{$width}px) { @content }
+}
+@mixin maxwidth($width) {
+    @media screen and (max-width: #{$width}px) { @content }
+}
+
+@mixin fontface($name, $url, $weight, $style, $original) {
+    @font-face {
+        font-family: $name;
+
+        src: url('#{$url}.eot');
+        src: url('#{$url}.eot?#iefix') format('embedded-opentype'),
+             url('#{$url}.woff') format('woff'),
+             url('#{$url}.ttf') format('truetype'),
+             url('#{$url}.svg##{$original}') format('svg');
+
+        font-weight   : $weight;
+        font-style    : $style;
+        unicode-range : U+00-017C;
+    }
+}
+
+
+$cyan : #92B8DF;
+
+/* ==================================================================== */
+html { height: 100%; background-color: #fcfcfc; }
+body {
+    font-family: 'Indie Flower', arial;
+    color: #434343;
+}
+
+body > div {
+    padding: 30px 20px 0 20px;
+}
+
+hr, .no-css { display: none; }
+#wrapper {
+    width: 960px;
+    min-width: 360px;
+    margin: 0 auto;
+    position : relative;
+    @include maxwidth(1024) { width: 100%; }
+}
+
+
+h1,h2 { font-weight: normal; text-align: center; }
+h1 { font-size: 3.4em; color: $cyan; margin: 0.3em 0 0 0; line-height: 1;
+    span { font-size: 1rem; display: block;}
+}
+h2 { font-size: 1.6em; color: #525158; margin: 1.2em 0 0.6em 0;}
+
+
+label, #debugmode {
+    position: absolute;
+    z-index: 2;
+    opacity: 1;
+    @include transition(opacity 1s);
+    @include maxwidth(940) {
+        opacity: 0;
+    }
+}
+
+#debugmode {
+    top: 5px;
+    right: 8px;
+}
+label {
+    top: 2px;
+    right: 2px;
+    font : 14px monospace;
+    color : #747474;
+    padding     : 3px 28px 3px 3px;
+    background  : rgba(230,230,230, .85);
+}
+
+#debugmode:checked + div {
+
+    background: #fff;
+
+    @include maxwidth(1024) {
+
+        background: #fff url(../images/grid.png) top left no-repeat;
+        &:before {
+            content: ">1023";
+            position: absolute;
+            left: 2px;
+            top: 2px;
+            padding     : 3px 8px;
+            font        : 14px monospace;
+            color       : #747474;
+            background  : rgba(230,230,230, .85);
+
+            @include maxwidth(1023) { content: "< 1023"; }
+            @include maxwidth(940) { content: "< 940"; }
+            @include maxwidth(850) { content: "< 850"; }
+            @include maxwidth(720) { content: "< 720"; }
+            @include maxwidth(640) { content: "< 640"; }
+            @include maxwidth(460) { content: "< 460"; }
+        }
+    }
+}
+
+/* ==================================================================== */
+
+/**
+ * Scene & path style
+ */
+
+#scene {
+
+    @include box-shadow(0 3px 8px #d8d8de);
+
+    position    : relative;
+    z-index     : 1;
+    height      : 180px;
+    margin      : 0 auto;
+    overflow    : hidden;
+    border      : 1px #d8d8d8 solid;
+    background  : #f8f8f8 url(../images/dots.png) 10px 100px repeat-x;
+
+    &:before, &:after {
+        position    : absolute;
+        display     : block;
+        top         : 10px;
+        z-index     : 2;
+        color       : $cyan;
+        font        : 24px 'Press Start 2P', monospace;
+    }
+
+    &:before {
+        @include transition(opacity 1s);
+        top       : 6px;
+        left      : 15px;
+        width     : 35px;
+        height    : 35px;
+        display   : block;
+        content     : "";
+        background  : url(../images/cherry.png) top left no-repeat;
+        background-size : 25px 25px;
+        opacity   : 1;
+
+        @include maxwidth(720) { opacity: 0; }
+    }
+
+    /**
+     * Score
+     */
+
+    &:after {
+        right       : 25px;
+        content     : "1UP 000000";
+
+        @include maxwidth(1024) { content: "1UP 000000"; }
+        @include maxwidth(1023) { content: "1UP 000030"; }
+        @include maxwidth(940) { content: "1UP 000090"; }
+        @include maxwidth(850) { content: "1UP 000150"; }
+        @include maxwidth(720) { content: "1UP 000280"; }
+        @include maxwidth(640) { content: "1UP 000340"; }
+        @include maxwidth(460) { content: "1UP 000840"; }
+
+
+        @include maxwidth(1023) {
+           @include animation(pulse 0.75s linear 0s infinite);
+        }
+        @include maxwidth(940) {
+           @include animation(none);
+        }
+
+    }
+
+}
+
+#path {
+    @include transition(left .4s);
+    position    : absolute;
+    z-index     : 3;
+    width       : 100%;
+    left        : 93%;
+    right       : 96px;
+    top         : 60px;
+    background  : #f8f8f8;
+
+    @include maxwidth(1023) { left: 85%; }
+    @include maxwidth(940) { left: 74%; }
+    @include maxwidth(850) { left: 65%; }
+    @include maxwidth(720) { left: 50%; }
+    @include maxwidth(640) { left: 30%; }
+    @include maxwidth(460) { left: 20%; }
+
+}
+
+/* ==================================================================== */
+
+/**
+ * Pacman Style
+ */
+
+.pacman {
+
+    @include transition(left 3s);
+
+    position    : relative;
+    z-index     : 2;
+    left        : -50px;
+    width       : 90px;
+    height      : 90px;
+    margin-top  : 2px;
+
+    span {
+        position    : absolute;
+        display     : block;
+        width       : 0;
+        height      : 0;
+        border      : 45px #f6f626 solid;
+        content     : "";
+
+        &.mandible {
+            @include transform-origin(center bottom);
+            @include animation(mandible .5s linear 0s infinite);
+            @include border-radius(50px 50px 0 0);
+            border-bottom   : 0;
+            top             : 0;
+        }
+
+        &.jaw {
+            @include transform-origin(center top);
+            @include animation(jaw .5s linear 0s infinite);
+            @include border-radius(0 0 50px 50px);
+            border-top      : 0;
+            bottom          : 0;
+        }
+    }
+
+
+
+    @include maxwidth(460) {
+        @include transition("margin-left 0.5s linear 0s,  left 2.5s linear 1.2s");
+        -webkit-transform : rotate(180deg);
+        -moz-transform : rotate(180deg);
+        -ms-transform : rotate(180deg);
+        -o-transform : rotate(180deg);
+        transform : rotate(180deg);
+        left : 300%;
+        margin-left: -5px;
+    }
+
+}
+
+/**
+ * pacman animation
+ */
+@-moz-keyframes mandible {
+    0%  { -moz-transform : rotate(0deg); }
+    50%  { -moz-transform : rotate(45deg); }
+    100%  { -moz-transform : rotate(0deg); }
+}
+@-moz-keyframes jaw {
+    0%  { -moz-transform : rotate(0deg); }
+    50%  { -moz-transform : rotate(-45deg); }
+    100%  { -moz-transform : rotate(0deg); }
+}
+@-webkit-keyframes mandible {
+    0%  { -webkit-transform : rotate(0deg); }
+    50%  { -webkit-transform : rotate(45deg); }
+    100%  { -webkit-transform : rotate(0deg); }
+}
+@-webkit-keyframes jaw {
+    0%  { -webkit-transform : rotate(0deg); }
+    50%  { -webkit-transform : rotate(-45deg); }
+    100%  { -webkit-transform : rotate(0deg); }
+}
+@-ms-keyframes mandible {
+    0%  { -ms-transform : rotate(0deg); }
+    50%  { -ms-transform : rotate(45deg); }
+    100%  { -ms-transform : rotate(0deg); }
+}
+@-ms-keyframes jaw {
+    0%  { -ms-transform : rotate(0deg); }
+    50%  { -ms-transform : rotate(-45deg); }
+    100%  { -ms-transform : rotate(0deg); }
+}
+
+@-o-keyframes mandible {
+    0%  { -o-transform : rotate(0deg); }
+    50%  { -o-transform : rotate(45deg); }
+    100%  { -o-transform : rotate(0deg); }
+}
+@-o-keyframes jaw {
+    0%  { -o-transform : rotate(0deg); }
+    50%  { -o-transform : rotate(-45deg); }
+    100%  { -o-transform : rotate(0deg); }
+}
+@keyframes mandible {
+    0%  { transform : rotate(0deg); }
+    50%  { transform : rotate(45deg); }
+    100%  { transform : rotate(0deg); }
+}
+@keyframes jaw {
+    0%  { transform : rotate(0deg); }
+    50%  { transform : rotate(-45deg); }
+    100%  { transform : rotate(0deg); }
+}
+/* ==================================================================== */
+
+.ghost {
+
+    @include animation(float 1s linear 0s infinite);
+    @include transition(left 1s);
+
+    position    : absolute;
+    z-index     : 4;
+    top         : 57px;
+    width       : 96px;
+    height      : 96px;
+    left        : 120%;
+    background  : url(../images/ghost.png) top left no-repeat;
+
+    @include maxwidth(850) { left: 85%; }
+    @include maxwidth(720) { left: 67%;  background-position: top center;  }
+    @include maxwidth(640) { left: 43%; }
+
+    @include maxwidth(460) {
+        @include transition(left 2s linear 1s);
+        background-position: top right;
+        left: 200%;
+    }
+
+
+    @include maxwidth(720) {
+        @include animation("float 1s linear 0s infinite, pulse 0.75s linear 0s infinite");
+     }
+    @include maxwidth(640) {
+        @include animation(float 1s linear 0s infinite);
+    }
+}
+
+/**
+ * ghost animation
+ */
+
+@include keyframes(float) {
+    0%   { margin: 0;            }
+    25%  { margin: 2px 0 0 -3px;  }
+    50%  { margin: 0 0 0 2px;   }
+    75%  { margin: -2px 0 0 2px; }
+    100% { margin: 0;            }
+}
+
+
+
+
+/** cherry & bonus **/
+
+#cherry, #powerball {
+
+    /* @include animation(pulse 4s ease-in-out 0s infinite); */
+    position    : absolute;
+    z-index     : 1;
+    top         : 89px;
+    width       : 35px;
+    height      : 35px;
+    line-height : 35px;
+    background-color  : #f8f8f8;
+
+    &:before {
+        content: "";
+        display: block;
+        width: 100%;
+        height: 100%;
+    }
+}
+
+#cherry {
+    left : 400px;
+
+    &:before {
+        background: url(../images/cherry.png) center center no-repeat;
+
+        @include maxwidth(940) {
+           @include animation("pulse 0.75s linear 0s infinite");
+        }
+        @include maxwidth(850) {
+           @include animation(none);
+        }
+    }
+}
+
+#powerball {
+    left : 86px;
+    &:before {
+        background: url(../images/powerball.png) center center no-repeat;
+    }
+}
+
+
+@include keyframes(pulse) {
+    0% { opacity: 1; }
+    50% { opacity: 0.3; }
+}
+
+/**
+ * Info Layers
+ */
+#scene a {
+
+
+}
+
+#credits {
+    opacity : 0;
+    @include transition(opacity 1s linear 2s);
+    @include box-sizing(border-box);
+
+    position: absolute;
+    z-index : 10;
+    top     : 0;
+    left    : 0;
+    width   : 100%;
+    height  : 100%;
+    padding : 10px 15px;
+    pointer-events: none;
+    background: rgba(240,240,240, 1);
+
+    &:before {
+        content: "GAME OVER";
+        display: block;
+        position: absolute;
+        top: 25px;
+        left: 0;
+        width: 100%;
+        text-align: center;
+        color: $cyan;
+        font: 20px 'Press Start 2P', monospace;
+    }
+
+    .pacman {
+        @include animation(pacman-end 7s linear 5s infinite);
+        @include transition(none);
+        left: -300px;
+        top : 56px;
+    }
+    .ghost {
+        @include animation("ghost-end 7s linear 5s infinite, float 1s linear 0s infinite");
+        @include transition(none);
+        left: -160px;
+        top : 64px;
+    }
+
+    @include maxwidth(460) {
+        display : block;
+        opacity : 1;
+    }
+}
+
+@include keyframes(pacman-end) {
+    0%  { left: -300px; }
+    15%  { left: 100px; }
+    30%  { left: 500px;}
+    100% { left: 500px; }
+}
+@include keyframes(ghost-end) {
+    0%  { left: -160px; }
+    15%  { left: 240px; }
+    30%  { left: 640px;}
+    100% { left: 640px; }
+
+}
+
+
+#info {
+
+    h2 {
+        display: none;
+        @include maxwidth(460) {
+            display: block;
+        }
+    }
+
+    a {
+        display: none;
+        position: absolute;
+        z-index: 20;
+        cursor: pointer;
+
+        @include maxwidth(460) {
+            position: static;
+        }
+
+        &.infoscore {
+            width: 240px;
+            height: 30px;
+            top: 202px;
+            right: 25px;
+            @include maxwidth(1023) {  display: block; }
+            @include maxwidth(940) {  display: none; }
+        }
+        &.infofruit {
+            width: 35px;
+            height: 35px;
+            top: 282px;
+            left: 400px;
+            @include maxwidth(940) {  display: block; }
+            @include maxwidth(850) {  display: none; }
+        }
+        &.infoghost {
+            width: 96px;
+            height: 96px;
+            top: 260px;
+            left: 67%;
+            @include maxwidth(720) {  display: block; }
+            @include maxwidth(640) {  display: none; }
+        }
+
+
+        img {
+            display: none;
+            @include maxwidth(460) {
+                display: block;
+            }
+        }
+
+        + p {
+            display: none;
+            font-size: 1.06em;
+            @include maxwidth(460) {
+                display: block;
+
+                ~ p {
+                    border-top: 1px #525158 dotted;
+                    padding-top: 1.5em;
+                    margin-bottom: 1.5em;
+                }
+            }
+        }
+        &:focus + p {
+            display: block;
+            font-size: 1.2em;
+            @include minwidth(461) {
+                position: fixed;
+                z-index: 30;
+                top: 100px;
+                left: 50%;
+                width: 450px;
+                margin: 0 0 0 -250px;
+                padding : 90px 25px 60px 25px;
+                background: #fcfcfc;
+                border: 6px $cyan solid;
+                outline: 999px solid rgba(0,0,0,0.7);
+
+                &:before {
+                    content : "Maybe you didn't know that...";
+                    position: absolute;
+                    top: 15px;
+                    left: 25px;
+                    font-size: 2em;
+                    color: $cyan;
+                }
+
+
+                &:after {
+                    content : "click to close";
+                    position: absolute;
+                    bottom: 15px;
+                    right: 25px;
+                    color: $cyan;
+                }
+
+            }
+        }
+    }
+}
+
+footer {
+    width: 100%;
+    margin: 50px 0 0 -20px;
+    padding : 20px;
+    font-size : 1em;
+    border-top: 1px #d8d8d8 solid;
+    color : #999;
+    background : #fcfcfc;
+
+    @include maxwidth(460) {
+        text-align: center;
+        font-size : 0.8em;
+    }
+    img {
+        float: right;
+        margin-left: 20px;
+
+        @include maxwidth(460) {
+            margin: 15px auto;
+            display: block;
+            float : none;
+        }
+    }
+
+    p {
+        margin-top: 0;
+    }
+
+    a {
+        color: $cyan;
+    }
+}

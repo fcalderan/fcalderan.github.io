@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7" lang="it"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8" lang="it"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="it"><!--<![endif]-->
+<head>
+
+    <meta charset="utf-8">
+    <title>Pacmanimation</title>
+
+    <meta name="description" content="">
+    <meta name="author" content="Fabrizio Calderan, @fcalderan">
+    <meta name="viewport" content="width=device-width">
+
+    <style>
+        @font-face {
+            font-family: 'Indie Flower';
+            font-style: normal;
+            font-weight: normal;
+            src: local('Indie Flower'), local('IndieFlower'),
+            url('http://themes.googleusercontent.com/static/fonts/indieflower/v2/10JVD_humAd5zP2yrFqw6qRDOzjiPcYnFooOUGCOsRk.woff') format('woff');
+        }
+    </style>
+    <link href='http://fonts.googleapis.com/css?family=Press+Start+2P' rel='stylesheet'>
+    <link href="//fonts.googleapis.com/css?family=Indie+Flower" rel="stylesheet">
+
+    <link rel="stylesheet" href="css/normalize.css" />
+    <link rel="stylesheet" href="css/pacman2.css" />
+
+</head>
+<body>
+    <label>Activate grid and breakpoints info <span class="no-css">(requires CSS enabled)</span></label>
+    <input type="checkbox" id="debugmode" checked>
+
+    <div>
+
+        <div id="wrapper">
+
+            <h1>Pacmanimation <span>by Fabrizio Calderan, @fcalderan</span></h1>
+            <section>
+                <h2>Resize your browser down to <br>460px (little by little)</h2>
+                <!-- the scene container -->
+                <div id="scene">
+
+                    <div class="no-css">
+                        <p>If your device had CSS support you would see something like this
+                        on browser resizing at some different breakpoints:</p>
+
+                        <!-- old presentational attributes (useful only when CSS is disabled) -->
+                        <a href="images/screenshots/pacmanimation1.png">
+                            <img src="images/screenshots/pacmanimation1.png" height="200px" hspace="20px"></a>
+                        <a href="images/screenshots/pacmanimation2.png">
+                            <img src="images/screenshots/pacmanimation2.png" height="200px" hspace="20px"></a>
+                        <a href="images/screenshots/pacmanimation3.png">
+                            <img src="images/screenshots/pacmanimation3.png" height="200px" hspace="20px"></a>
+                    </div>
+
+                    <!-- the path walked by pacman (inside) -->
+                    <div id="path">
+                        <div class="pacman">
+                            <!-- All browsers except Firefox are not able to animate pseudoelements yet. -->
+                            <span class="mandible"></span>
+                            <span class="jaw"></span>
+                        </div>
+                    </div>
+
+                    <!-- inky is chasing pacman... -->
+                    <div class="ghost"></div>
+
+                    <!-- cherry and powerball on the wall -->
+                    <div id="cherry"></div>
+                    <div id="powerball"></div>
+
+                    <!-- credits with chase -->
+                    <div id="credits">
+                        <div class="pacman">
+                            <span class="mandible"></span>
+                            <span class="jaw"></span>
+                        </div>
+                        <div class="ghost"></div>
+                    </div>
+                </div>
+            </section>
+
+            <hr>
+
+            <section id="info">
+                <h2>Maybe you didn't know that...</h2>
+
+                <a href="#" class="infoscore"></a>
+                <p>
+                    &hellip;the maximum possible score playing Pacman (by eating every possible dot,
+                    power pellet, fruit, and enemy) without losing a single life is <b>3,333,360 points</b>.
+                    <br>
+                    The first person to achieve it was Billy Mitchell on July 3, 1999 in a 6-hour game.
+                </p>
+
+                <a href="#" class="infofruit"></a>
+                <p>
+                    &hellip;pacman was designed to be a <em>no-ending</em> game (so as long a life is available,
+                    a player may continue the game indefinitely)
+                    but at <b>255-th level</b>, due to a rendering bug, too many fruits appear on the bottom line, causing a kill-split-screen to appear. So it's impossible to go further into the
+                    game.
+                </p>
+
+                <a href="#" class="infoghost"></a>
+                <p>
+                    &hellip;the name of the blue ghost in the american version of Pacman is "Inky"
+                    but its original japanese name is actually "Kimagure" (気まぐれ).
+                </p>
+
+
+            </section>
+        </div>
+
+        <hr>
+
+        <footer>
+            <img src="http://www.w3.org/html/logo/badge/html5-badge-h-solo.png" alt="HTML5 Powered">
+
+            <p>
+                This demo uses only CSS3 and it is absolutely javascript-free. It was specifically designed
+                for Firefox only: on Opera it looks quite good and on Webkit and IE9 some animations fail &mdash;
+                Some content is also available if CSS are disabled/not supported.
+            </p>
+            <p>
+                Animations, transformations, content repositioning, score update and interactive clickable (blinking) objects are all
+                managed only through mediaqueries.
+            </p>
+            <p>
+                Source of available insights: <a href="http://en.wikipedia.org/wiki/Pac-Man">Wikipedia</a>
+            </p>
+
+        </footer>
+    </div>
+
+</body>
+</html>

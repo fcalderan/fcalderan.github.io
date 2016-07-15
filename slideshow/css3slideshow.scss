@@ -1,0 +1,67 @@
+@mixin keyframes($animationName) {
+    @-webkit-keyframes #{$animationName} {
+        @content;
+    }
+    @-moz-keyframes #{$animationName} {
+        @content;
+    }
+    @-ms-keyframes #{$animationName} {
+        @content;
+    }
+    @-o-keyframes #{$animationName} {
+        @content;
+    }
+    @keyframes #{$animationName} {
+        @content;
+    }
+}
+
+@mixin slideshow($settings) { 
+    $images     : map-get($settings, images); 
+    $duration   : map-get($settings, duration);
+    $transition : map-get($settings, transition);
+    $easing     : map-get($settings, easing);
+
+    // total duration (in seconds) 
+    $totalDuration: $images * $duration;
+    $animationSettings : #{$totalDuration} #{$easing} 0s;
+
+    position: relative;
+
+    li {
+        position: absolute;  
+        -webkit-animation: CSS3slideshow #{$animationSettings} infinite;
+        -moz-animation: CSS3slideshow #{$animationSettings} infinite;
+        -ms-animation: CSS3slideshow #{$animationSettings} infinite;
+        -o-animation: CSS3slideshow #{$animationSettings} infinite;
+        animation: CSS3slideshow #{$animationSettings} infinite;    
+
+        @for $i from 1 through $images {
+            $zindex: $images - $i; 
+            &:nth-child(#{$i}) { 
+                z-index: #{$zindex + 1}; 
+                @if ($i > 1) {
+                    @each $prefix in (-webkit-, -moz-, -ms-, -o-, '') {
+                        #{$prefix}animation-delay: #{$duration * ($i - 1)};
+                    }
+                }
+            }
+        }
+    }
+
+
+    @at-root {
+        $endEffect: 100% / $images;
+        $timeEffect: ($transition * 100% / $totalDuration);
+        $startEffect: $endEffect - $timeEffect;
+
+        @include keyframes(CSS3slideshow) {
+          #{$startEffect} { opacity: 1;}
+          #{$endEffect} { opacity: 0;} 
+          #{100% - $timeEffect} { opacity: 0;}
+          100% { opacity: 1;}
+        }
+    }
+  
+  
+}
