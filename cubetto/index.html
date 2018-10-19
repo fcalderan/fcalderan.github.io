@@ -1,0 +1,150 @@
+<!doctype html>
+<html class="no-js" lang="">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title></title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link rel="manifest" href="site.webmanifest">
+    <link rel="apple-touch-icon" href="icon.png">
+    <!-- Place favicon.ico in the root directory -->
+
+    <link rel="stylesheet" href="/css/base.min.css">
+</head>
+
+<body>
+
+     
+    <section class="cubetto">
+
+        <form class="cubetto__board" action="" method="post">
+
+            <div class="cubetto__algorithm">
+                <ul>
+                    <li class="cubetto__step">1</li>
+                    <li class="cubetto__step">2</li>
+                    <li class="cubetto__step">3</li>
+                    <li class="cubetto__step">4</li>
+                    <li class="cubetto__step">5</li>
+                    <li class="cubetto__step">6</li>
+                    <li class="cubetto__step">7</li>
+                    <li class="cubetto__step">8</li>
+                    <li class="cubetto__step">9</li>
+                    <li class="cubetto__step">10</li>
+                    <li class="cubetto__step">11</li>
+               </ul>
+               <button class="cubetto__playbtt" type="submit">Run</button>
+            </div> 
+
+            <div class="cubetto__function">
+              <ul>
+                  <li class="cubetto__step">1</li>
+                  <li class="cubetto__step">2</li>
+                  <li class="cubetto__step">3</li>
+                  <li class="cubetto__step">4</li>
+               </ul>
+            </div>
+        </form>
+
+
+        <aside class="cubetto__pieces">
+          
+            <ul>
+              <li class="cubetto__piece">
+                <div class="cubetto__piece--forward" draggable="true" data-statement="forward">
+                    
+                </div></li>
+              <li class="cubetto__piece">
+                <div class="cubetto__piece--left" draggable="true" data-statement="left">
+                    
+                </div></li>
+              <li class="cubetto__piece">
+                <div class="cubetto__piece--right" draggable="true" data-statement="right">
+                    
+                </div></li>
+              <li class="cubetto__piece">
+                <div class="cubetto__piece--function" draggable="true" data-statement="function">
+                    
+                </div></li>
+            </ul>
+
+        <aside>
+
+    </section>
+
+
+    <script>
+        let pieces = document.querySelector('.cubetto__pieces');
+        let steps  = document.querySelectorAll('.cubetto__step');
+        let board  = document.querySelector('.cubetto__board');
+
+
+        /* submit form */
+        board.addEventListener('submit', function(ev) {
+            ev.preventDefault();
+            navigator.bluetooth.requestDevice({
+                acceptAllDevices: true
+            }).then(function(device) {
+                console.log(device);
+            })
+        });
+        
+
+        /* drag and drop pieces */
+
+
+
+        var dragHandler = function(ev, dragEvent) {
+            if (ev.target.matches('[draggable]')) {
+                ev.stopPropagation();
+                return dragEvent(ev);
+            }
+        }
+
+        function dragStart(ev) {
+            let stmt = ev.target.dataset.statement;
+            ev.dataTransfer.dropEffect = "copy";
+            ev.dataTransfer.setData("text/plain", stmt);
+            console.log('dragstart', stmt)
+        }
+
+        
+        pieces.addEventListener('dragstart', function(ev) {
+            dragHandler(ev, dragStart);
+        });
+
+        
+        [...steps].forEach(function(s) {
+
+            s.addEventListener('dragover', function(ev) { ev.preventDefault(); });
+
+            s.addEventListener('drop', function(ev) {
+                ev.preventDefault();
+                let stmt = ev.dataTransfer.getData("text/plain");
+
+                /* if the statement is 'function' and the target element is
+                 * a step inside the function flow then we need to forbid this 
+                 * action because it lead to an infinite recursion 
+                 */
+                if (stmt === 'function' && this.closest('.cubetto__function')) {
+                    return;
+                }
+
+                this.dataset.statement = stmt;
+                console.log('drop', stmt);                
+            });
+
+            s.addEventListener('dblclick', function(ev) { 
+                this.removeAttribute('data-statement');
+            });
+
+        });
+
+        
+    </script>
+  
+</body>
+</html>
