@@ -60,7 +60,8 @@ body {
 
 :root {
   --blue: #7ea8e0;
-  --bluegradient: linear-gradient(45deg, #1996ae, #81b5ed); }
+  --bluegradient: linear-gradient(45deg, #1996ae, #81b5ed);
+  --bluegradientinv: linear-gradient(225deg, #1996ae, #81b5ed); }
 
 .cubetto {
   display: -webkit-box;
@@ -169,7 +170,7 @@ body {
   padding-bottom: 100%;
   vertical-align: top;
   display: inline-block;
-  background: url(https://goo.gl/XPSkxL) 0 0 no-repeat/cover; }
+  background: url(../img/woodtexture.jpg) 0 0 no-repeat/cover; }
 
 .cubetto__playbtt {
   border-radius: 50%;
@@ -187,6 +188,12 @@ body {
   cursor: pointer;
   -webkit-box-shadow: -2px 2px 0px rgba(62, 62, 62, 0.2);
   box-shadow: -2px 2px 0px rgba(62, 62, 62, 0.2); }
+
+.cubetto__playbtt:focus {
+  outline: none;
+  -webkit-box-shadow: inset 0px 0px 3px rgba(62, 62, 62, 0.5);
+  box-shadow: inset 0px 0px 3px rgba(62, 62, 62, 0.5);
+  background: var(--bluegradientinv); }
 
 .cubetto__algorithm {
   position: absolute;
@@ -315,3 +322,6 @@ body {
 
 .cubetto__step[data-statement]:hover {
   cursor: pointer; }
+
+.cubetto__step[data-statement]::after {
+  background: #93e3f7; }
