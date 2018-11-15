@@ -84,16 +84,75 @@
         let steps  = document.querySelectorAll('.cubetto__step');
         let board  = document.querySelector('.cubetto__board');
         let conn   = document.getElementById('cubetto__connect');
+        let mainList = document.querySelector('.cubetto__algorithm ul');
+
+        let algorithm = []
+        let currentStmt;
+
+
 
 
         const BLE = {
-            name            : 'FC-A184',
-            service         : 0xFFE0,
-            characteristic  : 0xFFE1
+            name            : 'FC-883F',
+            service         : 0xffe0,
+            characteristic  : 0xffe1
         };
 
         let moveChar;
 
+        function getStatementArray(stmtNodes) {
+            return [...stmtNodes].map((s) => {
+                return {
+                    step: s,
+                    data: {
+                        'forward'  : 1,
+                        'left'     : 2,
+                        'right'    : 3,
+                        'function' : 4
+                    }[s.dataset.statement]
+                }
+            })
+        };
+
+
+        function getAlgorithm(msa, mfa) {
+            
+            let _algorithm = [];
+
+            msa.forEach((s) => {
+                if (s.data === 4) {
+                    mfa.forEach((_) => {
+                        _algorithm.push({
+                            step: [s.step, _.step],
+                            data: _.data
+                        })
+                    });
+                }
+                else {
+                    _algorithm.push({
+                        data: s.data,
+                        step: [s.step]
+                    });
+                }
+            });
+
+            return _algorithm;
+        }
+
+
+        function unBlinkStmt() {
+            let blinkingStmt = board.querySelectorAll('.blink');
+            [...blinkingStmt].forEach((bs) => {
+                bs.classList.remove('blink'); 
+            });
+            
+        }
+
+        function blinkStmt(stmt) {
+            setTimeout(() => {
+                stmt.step.forEach((bs) => bs.classList.add('blink'));
+            }, 20);
+        }
 
         function BLEConnection() {
 
@@ -118,7 +177,27 @@
             .catch(error => {
                 alert(error);
             });
-        }
+        };
+
+
+        function getBLEValue(event) {
+            var value = event.target.value.getUint8(0);
+            console.log("Value changed", value);
+
+            if (value === 255) {
+                console.log('idle');
+                unBlinkStmt();
+                console.table(algorithm);
+
+                if (algorithm.length > 0) {
+                    currentStmt = algorithm.shift();
+                    blinkStmt(currentStmt);
+                    console.info("Executing", currentStmt.data);
+                    moveChar.writeValue(Uint8Array.of(currentStmt.data));
+                }
+            
+            }
+        };
 
 
         /* Bluetooth connection handler */
@@ -126,28 +205,10 @@
 
             BLEConnection().then(c => {
                 moveChar = c;
-                moveChar.addEventListener('characteristicvaluechanged', function(event) {
-                    var value = event.target.value.getUint8(0);
-                    console.log('[characteristicvaluechanged]:', value);
+                return moveChar.startNotifications().then(_ => {
+                    console.log('[startnotifications]');      
+                    moveChar.addEventListener('characteristicvaluechanged', getBLEValue);  
                 });
-
-                // moveChar.readValue().then(function(v) {
-                //     console.log("Reading value:", v);
-                //     console.log("writing value: 2");
-                //     moveChar.writeValue(Uint8Array.of(2));
-                // });
-
-                moveChar.startNotifications().then(_ => {
-                    console.log('[startnotifications]');
-
-                    // setTimeout(function() {
-                    //     moveChar.writeValue(Uint8Array.of(2));
-                    // }, 5000)
-                });
-
-                console.log('[characteristic]:', moveChar)
-                
-
             })
         });
 
@@ -155,35 +216,24 @@
         /* submit form */
         board.addEventListener('submit', function(ev) {
             ev.preventDefault();
-            /*navigator.bluetooth.requestDevice({
-                filters: [
-                    { name: BLE.name },
-                    { services: [ BLE.service ] }
-                ]
-            })
-            .then(device  => { return device.gatt.connect(); })
-            .then(server  => server.getPrimaryService(BLE.service))
-            .then(service => service.getCharacteristic(BLE.characteristic))
 
-            .then(char => {
-                char.addEventListener('characteristicvaluechanged', function(event) {
-                    var value = event.target.value.getUint8();
-                    console.log('Received ' + value);
-                });
-                char.readValue()
-                .then(function(v) {
-                    console.log(v);
-                    char.writeValue(Uint8Array.of(6)).then(function() {
-                        char.readValue().then((v) => console.log(v));
-                    })
-                }) 
-                console.log(c);
+            let mainStmt = document.querySelectorAll('.cubetto__algorithm [data-statement]');
+            let funcStmt = document.querySelectorAll('.cubetto__function [data-statement]');
 
-                                  
-            })
-            .catch(error => {
-                console.error(error);
-            });*/
+            let mainStmtArray = getStatementArray(mainStmt);
+            let mainFuncArray = getStatementArray(funcStmt);
+
+
+            algorithm = getAlgorithm(mainStmtArray, mainFuncArray);
+            console.table(algorithm);
+
+            if (algorithm.length) {
+                currentStmt = algorithm.shift();
+                console.info("Executing", currentStmt.data);
+                blinkStmt(currentStmt);
+                moveChar.writeValue(Uint8Array.of(currentStmt.data));
+            }
+            
         });
         
 
@@ -202,7 +252,7 @@
             let stmt = ev.target.dataset.statement;
             ev.dataTransfer.dropEffect = "copy";
             ev.dataTransfer.setData("text/plain", stmt);
-            console.log('dragstart', stmt)
+            //console.log('dragstart', stmt)
         }
 
         
@@ -217,22 +267,51 @@
 
             s.addEventListener('drop', function(ev) {
                 ev.preventDefault();
+
+                let mainStmt = document.querySelectorAll('.cubetto__algorithm [data-statement]');
+                let funcStmt = document.querySelectorAll('.cubetto__function [data-statement]');
                 let stmt = ev.dataTransfer.getData("text/plain");
 
                 /* if the statement is 'function' and the target element is
                  * a step inside the function flow then we need to forbid this 
                  * action because it lead to an infinite recursion 
+                 * Also we can't choose a function until the body of the function is empty
                  */
-                if (stmt === 'function' && this.closest('.cubetto__function')) {
-                    return;
+                if (stmt === 'function') {
+                    if (this.closest('.cubetto__function') || funcStmt.length === 0) {
+                        return;
+                    }
+                }
+
+                /* allow only adjacent drop */
+                if (this.previousElementSibling) {
+                    if (!this.previousElementSibling.matches('[data-statement]')) {
+                        return;
+                    }
                 }
 
                 this.dataset.statement = stmt;
-                console.log('drop', stmt);                
+                //console.log('drop', stmt);                
             });
 
             s.addEventListener('dblclick', function(ev) { 
-                this.removeAttribute('data-statement');
+    
+                let funcStmt, funcCall;
+                if (!this.nextElementSibling.matches('[data-statement]')) {
+                    this.removeAttribute('data-statement');
+                }
+
+                funcCall = document.querySelectorAll('.cubetto__algorithm [data-statement="function"]');
+                funcStmt = document.querySelectorAll('.cubetto__function [data-statement]');
+
+                if (funcStmt.length === 0 && funcCall.length > 0) {
+                    [...funcCall].forEach((fc) => {
+                        let step = document.createElement('li');
+                        step.className = 'cubetto__step';
+                        mainList.appendChild(step);
+                        fc.remove();
+                    });
+                }
             });
 
         });
@@ -240,107 +319,5 @@
         
     </script>
 
-
-
-    <script>
-        //https://raw.githubusercontent.com/binjospookie/web-bluetooth-api/master/index.js
-        // mac: 00:15:87:10:A1:84
-        
-        /*
-        const MY_BLUETOOTH_NAME = 'FC-A184';
-        const send_service = 0xFFE0;
-        const send_service_characteristic = 0xFFE1;
-
-        const controlButtonsListElements = document.querySelectorAll('.control-buttons > li');
-        const connectButton = document.getElementById('connectButton');
-        const disconnectButton = document.getElementById('disconnectButton');
-        const lightOffButton = document.getElementById('lightOff');
-        const toggleRedLightButton = document.getElementById('toggleRedLight');
-        const toggleBlueLightButton = document.getElementById('toggleBlueLight');
-        const toggleGreenLightButton = document.getElementById('toggleGreenLight');
-        const runBlinkLightButton = document.getElementById('runBlinkLight');
-
-        let toggleLigthCharacteristic;
-        let myDevice;
-
-        connectButton.addEventListener('pointerup', connectButtonPointerUpHandler);
-
-        function connectButtonPointerUpHandler() {
-          navigator.bluetooth.requestDevice({
-            filters:
-              [
-                { name: MY_BLUETOOTH_NAME },
-                { services: [send_service] },
-              ]
-          })
-            .then(device => {
-              myDevice = device;
-
-              return device.gatt.connect();
-            })
-            .then(server => server.getPrimaryService(send_service))
-            .then(service => service.getCharacteristic(send_service_characteristic))
-            .then(characteristic => {
-              console.log(characteristic);
-              // toggleLigthCharacteristic = characteristic;
-
-              // toggleButtonsVisible();
-              // toggleItemsEventListeners('addEventListener');
-            })
-            .catch(error => {
-              console.error(error);
-            });
-        }*/
-
-        // function lightOffButtonClickHandler() {
-        //   return toggleLigthCharacteristic.writeValue(Uint8Array.of(0));
-        // }
-
-        // function toggleLightButtonClickHandler(event) {
-        //   const code = Number(event.target.dataset.code);
-
-        //   if (code === 1) {
-        //     toggleLigthCharacteristic.writeValue(Uint8Array.of(code));
-
-        //     return;
-        //   }
-
-        //   toggleLigthCharacteristic.readValue()
-        //     .then(currentCode => {
-        //       const convertedCode = currentCode.getUint8(0);
-
-        //       toggleLigthCharacteristic.writeValue(Uint8Array.of(convertedCode === code ? 0 : code));
-        //     });
-        // }
-
-        // function toggleButtonsVisible() {
-        //   Array.prototype.forEach.call(controlButtonsListElements, listElement => {
-        //     listElement.classList.toggle('visible');
-        //   });
-        // }
-
-        // function disconnectButtonClickHandler() {
-        //   lightOffButtonClickHandler()
-        //     .then( () => {
-        //       myDevice.gatt.disconnect();
-
-        //       toggleItemsEventListeners('removeEventListener');
-        //       toggleButtonsVisible();
-
-        //       toggleLigthCharacteristic = undefined;
-        //       myDevice = undefined;
-        //     });
-        // }
-
-        // function toggleItemsEventListeners(action) {
-        //   disconnectButton[action]('click', disconnectButtonClickHandler);
-        //   lightOffButton[action]('click', lightOffButtonClickHandler);
-        //   runBlinkLightButton[action]('click', toggleLightButtonClickHandler);
-        //   toggleGreenLightButton[action]('click', toggleLightButtonClickHandler);
-        //   toggleRedLightButton[action]('click', toggleLightButtonClickHandler);
-        //   toggleBlueLightButton[action]('click', toggleLightButtonClickHandler);
-        // }
-    </script>
-  
 </body>
 </html>

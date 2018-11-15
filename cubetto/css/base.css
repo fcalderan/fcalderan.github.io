@@ -225,10 +225,10 @@ body {
   content: "";
   display: block;
   position: absolute;
-  bottom: -25%;
+  bottom: -27%;
   left: 50%;
-  width: 10%;
-  height: 10%;
+  width: 13%;
+  height: 13%;
   -webkit-transform: translateX(-50%);
   transform: translateX(-50%);
   border-radius: 50%;
@@ -324,4 +324,20 @@ body {
   cursor: pointer; }
 
 .cubetto__step[data-statement]::after {
-  background: #93e3f7; }
+  background-color: #93e3f7; }
+
+.cubetto__step.blink[data-statement]::after {
+  -webkit-animation: blink .5s linear 0s infinite;
+  animation: blink .5s linear 0s infinite; }
+
+@-webkit-keyframes blink {
+  0%, 60% {
+    background-color: #a2a2a2; }
+  60.01% {
+    background-color: #93e3f7; } }
+
+@keyframes blink {
+  0%, 60% {
+    background-color: #a2a2a2; }
+  60.01% {
+    background-color: #93e3f7; } }
