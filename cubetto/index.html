@@ -1,10 +1,10 @@
 <!doctype html>
-<html class="no-js" lang="">
+<html class="lte-primary-1" lang="it">
 
 <head>
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
-    <title></title>
+    <title>Cubetto</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
@@ -13,78 +13,122 @@
     <!-- Place favicon.ico in the root directory -->
 
     <link rel="stylesheet" href="css/base.min.css">
+    <link href="https://fonts.googleapis.com/css?family=Comfortaa:300,400" rel="stylesheet">
 </head>
 
 <body>
     
-    <section class="intro">
-        <button id="cubetto__connect">Connetti</button>
-    </section>
-     
-    <section class="cubetto">
+    <header class="intro">
+        <button id="intro__connect">
+            <span lang="it">Connetti</span>
+            <span lang="en">Connect</span>
+        </button>
+    </header>
 
-        <form class="cubetto__board" action="" method="post">
 
-            <div class="cubetto__algorithm">
+    <main class="main">
+
+        <form class="main__board" action="#" method="post">
+
+            <div class="main__algorithm">
                 <ul>
-                    <li class="cubetto__step">1</li>
-                    <li class="cubetto__step">2</li>
-                    <li class="cubetto__step">3</li>
-                    <li class="cubetto__step">4</li>
-                    <li class="cubetto__step">5</li>
-                    <li class="cubetto__step">6</li>
-                    <li class="cubetto__step">7</li>
-                    <li class="cubetto__step">8</li>
-                    <li class="cubetto__step">9</li>
-                    <li class="cubetto__step">10</li>
-                    <li class="cubetto__step">11</li>
+                    <li class="main__step">1</li>
+                    <li class="main__step">2</li>
+                    <li class="main__step">3</li>
+                    <li class="main__step">4</li>
+                    <li class="main__step">5</li>
+                    <li class="main__step">6</li>
+                    <li class="main__step">7</li>
+                    <li class="main__step">8</li>
+                    <li class="main__step">9</li>
+                    <li class="main__step">10</li>
+                    <li class="main__step">11</li>
                </ul>
-               <button class="cubetto__playbtt" type="submit">Run</button>
+               <button class="main__playbtt" type="submit">Run</button>
             </div> 
 
-            <div class="cubetto__function">
+            <div class="main__function">
               <ul>
-                  <li class="cubetto__step">1</li>
-                  <li class="cubetto__step">2</li>
-                  <li class="cubetto__step">3</li>
-                  <li class="cubetto__step">4</li>
+                  <li class="main__step">1</li>
+                  <li class="main__step">2</li>
+                  <li class="main__step">3</li>
+                  <li class="main__step">4</li>
                </ul>
             </div>
         </form>
 
 
-        <aside class="cubetto__pieces">
+        <aside class="main__pieces">
           
             <ul>
-              <li class="cubetto__piece">
-                <div class="cubetto__piece--forward" draggable="true" data-statement="forward">
+              <li class="main__piece">
+                <div class="main__piece--forward" draggable="true" data-statement="forward">
                     
                 </div></li>
-              <li class="cubetto__piece">
-                <div class="cubetto__piece--left" draggable="true" data-statement="left">
+              <li class="main__piece">
+                <div class="main__piece--left" draggable="true" data-statement="left">
                     
                 </div></li>
-              <li class="cubetto__piece">
-                <div class="cubetto__piece--right" draggable="true" data-statement="right">
+              <li class="main__piece">
+                <div class="main__piece--right" draggable="true" data-statement="right">
                     
                 </div></li>
-              <li class="cubetto__piece">
-                <div class="cubetto__piece--function" draggable="true" data-statement="function">
+              <li class="main__piece">
+                <div class="main__piece--function" draggable="true" data-statement="function">
                     
                 </div></li>
             </ul>
+        </aside>
 
-        <aside>
+    </main>
 
+    <section class="dialogs">
+
+        <div class="dialog dialog--no-ble-connection">            
+            <div class="dialog__wrap">
+                <h2>
+                    <span lang="it">Oh-Oh! <br/>Non trovo cubetto</span>
+                    <span lang="en">Uh-Oh! <br/>I can't find cubetto</span>
+                </h2>
+            </div>
+            <form class="dialog__menu" action="#">
+                <button class="dialog__btt dialog__btt--connect" type="button">
+                    <span lang="it">Cerca</span>
+                    <span lang="en">Find</span>
+                </button>
+                <button class="dialog__btt dialog__btt--close" type="button">
+                    <span lang="it">Chiudi</span>
+                    <span lang="en">Close</span>
+                </button>
+            </form>
+        </div>
+
+        <!-- <dialog class="dialog dialog--no-algorithm">            
+            <div class="dialog__wrap">
+                <h2>
+                    <span lang="it">Oh-Oh! <br/>Non trovo cubetto</span>
+                    <span lang="en">Uh-Oh! <br/>I can't find cubetto</span>
+                </h2>
+            </div>
+            <menu class="dialog__menu">
+                
+                <button class="dialog__btt dialog__btt--close">
+                    <span lang="it">Chiudi</span>
+                    <span lang="en">Close</span>
+                </button>
+            </menu>
+        </dialog> -->
+        
     </section>
 
 
     <script>
-        let pieces = document.querySelector('.cubetto__pieces');
-        let steps  = document.querySelectorAll('.cubetto__step');
-        let board  = document.querySelector('.cubetto__board');
-        let conn   = document.getElementById('cubetto__connect');
-        let mainList = document.querySelector('.cubetto__algorithm ul');
+        let pieces = document.querySelector('.main__pieces');
+        let steps  = document.querySelectorAll('.main__step');
+        let board  = document.querySelector('.main__board');
+        let conn   = document.getElementById('intro__connect');
+        let mainList = document.querySelector('.main__algorithm ul');
+        let body   = document.body;
 
         let algorithm = []
         let currentStmt;
@@ -98,7 +142,7 @@
             characteristic  : 0xffe1
         };
 
-        let moveChar;
+        let BLECharacteristic;
 
         function getStatementArray(stmtNodes) {
             return [...stmtNodes].map((s) => {
@@ -156,7 +200,7 @@
 
         function BLEConnection() {
 
-            moveChar = null;
+            BLECharacteristic = null;
             return navigator.bluetooth.requestDevice({
                 filters: [
                     { name: BLE.name },
@@ -164,7 +208,7 @@
                 ] 
             })
             .then(device  => {
-                cubettoRobot = device;
+                mainRobot = device;
                 return device.gatt.connect();
             })
             .then(server  =>  
@@ -193,23 +237,27 @@
                     currentStmt = algorithm.shift();
                     blinkStmt(currentStmt);
                     console.info("Executing", currentStmt.data);
-                    moveChar.writeValue(Uint8Array.of(currentStmt.data));
+                    BLECharacteristic.writeValue(Uint8Array.of(currentStmt.data));
                 }
             
             }
         };
 
 
+        function initBLEConnection() {
+            BLEConnection().then(c => {
+                BLECharacteristic = c;
+                return BLECharacteristic.startNotifications().then(_ => {
+                    console.log('[startnotifications]');      
+                    BLECharacteristic.addEventListener('characteristicvaluechanged', getBLEValue);  
+                });
+            });
+        };
+
+
         /* Bluetooth connection handler */
         conn.addEventListener('click', function(ev) {
-
-            BLEConnection().then(c => {
-                moveChar = c;
-                return moveChar.startNotifications().then(_ => {
-                    console.log('[startnotifications]');      
-                    moveChar.addEventListener('characteristicvaluechanged', getBLEValue);  
-                });
-            })
+            initBLEConnection();
         });
 
 
@@ -217,21 +265,32 @@
         board.addEventListener('submit', function(ev) {
             ev.preventDefault();
 
-            let mainStmt = document.querySelectorAll('.cubetto__algorithm [data-statement]');
-            let funcStmt = document.querySelectorAll('.cubetto__function [data-statement]');
+            let mainStmt = document.querySelectorAll('.main__algorithm [data-statement]');
+            let funcStmt = document.querySelectorAll('.main__function [data-statement]');
 
             let mainStmtArray = getStatementArray(mainStmt);
             let mainFuncArray = getStatementArray(funcStmt);
 
-
             algorithm = getAlgorithm(mainStmtArray, mainFuncArray);
+
+
+            if (BLECharacteristic === undefined) {
+                body.classList.add('no-ble-connection');
+                return false;   
+            }
+
+            if (algorithm.length === 0) {
+                body.classList.add('no-algorithm');
+                return false;
+            }
+
             console.table(algorithm);
 
             if (algorithm.length) {
                 currentStmt = algorithm.shift();
                 console.info("Executing", currentStmt.data);
                 blinkStmt(currentStmt);
-                moveChar.writeValue(Uint8Array.of(currentStmt.data));
+                BLECharacteristic.writeValue(Uint8Array.of(currentStmt.data));
             }
             
         });
@@ -268,9 +327,11 @@
             s.addEventListener('drop', function(ev) {
                 ev.preventDefault();
 
-                let mainStmt = document.querySelectorAll('.cubetto__algorithm [data-statement]');
-                let funcStmt = document.querySelectorAll('.cubetto__function [data-statement]');
+                let mainStmt = document.querySelectorAll('.main__algorithm [data-statement]');
+                let funcStmt = document.querySelectorAll('.main__function [data-statement]');
                 let stmt = ev.dataTransfer.getData("text/plain");
+
+                let pES = this.previousElementSibling;
 
                 /* if the statement is 'function' and the target element is
                  * a step inside the function flow then we need to forbid this 
@@ -278,14 +339,14 @@
                  * Also we can't choose a function until the body of the function is empty
                  */
                 if (stmt === 'function') {
-                    if (this.closest('.cubetto__function') || funcStmt.length === 0) {
+                    if (this.closest('.main__function') || funcStmt.length === 0) {
                         return;
                     }
                 }
 
                 /* allow only adjacent drop */
-                if (this.previousElementSibling) {
-                    if (!this.previousElementSibling.matches('[data-statement]')) {
+                if (!!pES) {
+                    if (!pES.matches('[data-statement]')) {
                         return;
                     }
                 }
@@ -294,30 +355,51 @@
                 //console.log('drop', stmt);                
             });
 
+
             s.addEventListener('dblclick', function(ev) { 
     
                 let funcStmt, funcCall;
-                if (!this.nextElementSibling.matches('[data-statement]')) {
+                let nES = this.nextElementSibling;
+                if (nES === null || !nES.matches('[data-statement]')) {
                     this.removeAttribute('data-statement');
                 }
 
-                funcCall = document.querySelectorAll('.cubetto__algorithm [data-statement="function"]');
-                funcStmt = document.querySelectorAll('.cubetto__function [data-statement]');
+                funcCall = document.querySelectorAll('.main__algorithm [data-statement="function"]');
+                funcStmt = document.querySelectorAll('.main__function [data-statement]');
 
                 if (funcStmt.length === 0 && funcCall.length > 0) {
                     [...funcCall].forEach((fc) => {
                         let step = document.createElement('li');
-                        step.className = 'cubetto__step';
+                        step.className = 'main__step';
                         mainList.appendChild(step);
                         fc.remove();
                     });
                 }
             });
-
         });
 
-        
+
+        /*** Modals ***/
+        function closeDialog() {
+            body.className = "";
+        }
+
+
+        body.addEventListener('click', function(ev) {
+            let tgt = ev.target;
+
+            if (tgt.matches('.dialog__btt--close')) {
+                closeDialog();
+            }
+
+            if (tgt.matches('.dialog__btt--connect > *')) {
+                initBLEConnection();
+            }
+
+        });
     </script>
+
+
 
 </body>
 </html>
