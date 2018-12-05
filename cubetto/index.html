@@ -32,17 +32,17 @@
 
             <div class="main__algorithm">
                 <ul>
-                    <li class="main__step">1</li>
-                    <li class="main__step">2</li>
-                    <li class="main__step">3</li>
-                    <li class="main__step">4</li>
-                    <li class="main__step">5</li>
-                    <li class="main__step">6</li>
-                    <li class="main__step">7</li>
-                    <li class="main__step">8</li>
-                    <li class="main__step">9</li>
-                    <li class="main__step">10</li>
-                    <li class="main__step">11</li>
+                    <li class="main__step"></li>
+                    <li class="main__step"></li>
+                    <li class="main__step"></li>
+                    <li class="main__step"></li>
+                    <li class="main__step"></li>
+                    <li class="main__step"></li>
+                    <li class="main__step"></li>
+                    <li class="main__step"></li>
+                    <li class="main__step"></li>
+                    <li class="main__step"></li>
+                    <li class="main__step"></li>
                </ul>
                <button class="main__playbtt" type="submit">Run</button>
             </div> 
@@ -123,8 +123,8 @@
 
 
     <script>
-        let pieces = document.querySelector('.main__pieces');
-        let steps  = document.querySelectorAll('.main__step');
+        let steps  = document.querySelectorAll('.main__step');;
+        let pieces = document.querySelector('.main__pieces');  
         let board  = document.querySelector('.main__board');
         let conn   = document.getElementById('intro__connect');
         let mainList = document.querySelector('.main__algorithm ul');
@@ -168,7 +168,7 @@
                     mfa.forEach((_) => {
                         _algorithm.push({
                             step: [s.step, _.step],
-                            data: _.data
+                            data: _.data + 10
                         })
                     });
                 }
@@ -298,8 +298,6 @@
 
         /* drag and drop pieces */
 
-
-
         var dragHandler = function(ev, dragEvent) {
             if (ev.target.matches('[draggable]')) {
                 ev.stopPropagation();
@@ -311,7 +309,6 @@
             let stmt = ev.target.dataset.statement;
             ev.dataTransfer.dropEffect = "copy";
             ev.dataTransfer.setData("text/plain", stmt);
-            //console.log('dragstart', stmt)
         }
 
         
@@ -319,19 +316,24 @@
             dragHandler(ev, dragStart);
         });
 
-        
-        [...steps].forEach(function(s) {
 
-            s.addEventListener('dragover', function(ev) { ev.preventDefault(); });
+        board.addEventListener('dragover', function(ev) { 
+            if (ev.target.matches('.main__step')) {
+                ev.preventDefault(); 
+            }
+        });
 
-            s.addEventListener('drop', function(ev) {
+        board.addEventListener('drop', function(ev) {
+
+            let tgt = ev.target;
+            if (tgt.matches('.main__step')) {
                 ev.preventDefault();
 
                 let mainStmt = document.querySelectorAll('.main__algorithm [data-statement]');
                 let funcStmt = document.querySelectorAll('.main__function [data-statement]');
                 let stmt = ev.dataTransfer.getData("text/plain");
 
-                let pES = this.previousElementSibling;
+                let prevEl = tgt.previousElementSibling;
 
                 /* if the statement is 'function' and the target element is
                  * a step inside the function flow then we need to forbid this 
@@ -339,43 +341,50 @@
                  * Also we can't choose a function until the body of the function is empty
                  */
                 if (stmt === 'function') {
-                    if (this.closest('.main__function') || funcStmt.length === 0) {
+                    if (tgt.closest('.main__function') || funcStmt.length === 0) {
                         return;
                     }
                 }
 
                 /* allow only adjacent drop */
-                if (!!pES) {
-                    if (!pES.matches('[data-statement]')) {
+                console.log(prevEl);
+                if (!!prevEl) {
+                    if (!prevEl.matches('[data-statement]')) {
                         return;
                     }
                 }
 
-                this.dataset.statement = stmt;
-                //console.log('drop', stmt);                
-            });
+                tgt.dataset.statement = stmt;
+                //console.log('drop', stmt);    
+            }            
+        });
 
 
-            s.addEventListener('dblclick', function(ev) { 
-    
+        board.addEventListener('dblclick', function(ev) { 
+
+            let tgt = ev.target;
+            if (tgt.matches('.main__step')) {
                 let funcStmt, funcCall;
-                let nES = this.nextElementSibling;
-                if (nES === null || !nES.matches('[data-statement]')) {
-                    this.removeAttribute('data-statement');
+                let nextEl = tgt.nextElementSibling;
+
+                if (nextEl === null || !nextEl.matches('[data-statement]')) {
+                    tgt.removeAttribute('data-statement');
                 }
 
                 funcCall = document.querySelectorAll('.main__algorithm [data-statement="function"]');
                 funcStmt = document.querySelectorAll('.main__function [data-statement]');
 
                 if (funcStmt.length === 0 && funcCall.length > 0) {
-                    [...funcCall].forEach((fc) => {
+                    [...funcCall].forEach((call) => {
                         let step = document.createElement('li');
                         step.className = 'main__step';
                         mainList.appendChild(step);
-                        fc.remove();
+                        call.remove();
                     });
                 }
-            });
+
+            }
+
         });
 
 
