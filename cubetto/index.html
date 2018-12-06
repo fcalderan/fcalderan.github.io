@@ -32,27 +32,27 @@
 
             <div class="main__algorithm">
                 <ul>
-                    <li class="main__step"></li>
-                    <li class="main__step"></li>
-                    <li class="main__step"></li>
-                    <li class="main__step"></li>
-                    <li class="main__step"></li>
-                    <li class="main__step"></li>
-                    <li class="main__step"></li>
-                    <li class="main__step"></li>
-                    <li class="main__step"></li>
-                    <li class="main__step"></li>
-                    <li class="main__step"></li>
+                    <li class="main__step" data-context="main"></li>
+                    <li class="main__step" data-context="main"></li>
+                    <li class="main__step" data-context="main"></li>
+                    <li class="main__step" data-context="main"></li>
+                    <li class="main__step" data-context="main"></li>
+                    <li class="main__step" data-context="main"></li>
+                    <li class="main__step" data-context="main"></li>
+                    <li class="main__step" data-context="main"></li>
+                    <li class="main__step" data-context="main"></li>
+                    <li class="main__step" data-context="main"></li>
+                    <li class="main__step" data-context="main"></li>
                </ul>
                <button class="main__playbtt" type="submit">Run</button>
             </div> 
 
             <div class="main__function">
               <ul>
-                  <li class="main__step">1</li>
-                  <li class="main__step">2</li>
-                  <li class="main__step">3</li>
-                  <li class="main__step">4</li>
+                  <li class="main__step" data-context="function">1</li>
+                  <li class="main__step" data-context="function">2</li>
+                  <li class="main__step" data-context="function">3</li>
+                  <li class="main__step" data-context="function">4</li>
                </ul>
             </div>
         </form>
@@ -123,12 +123,13 @@
 
 
     <script>
-        let steps  = document.querySelectorAll('.main__step');;
-        let pieces = document.querySelector('.main__pieces');  
-        let board  = document.querySelector('.main__board');
-        let conn   = document.getElementById('intro__connect');
+        let steps    = document.querySelectorAll('.main__step');;
+        let pieces   = document.querySelector('.main__pieces');  
+        let board    = document.querySelector('.main__board');
+        let conn     = document.getElementById('intro__connect');
         let mainList = document.querySelector('.main__algorithm ul');
-        let body   = document.body;
+        let funcList = document.querySelector('.main__function ul');
+        let body     = document.body;
 
         let algorithm = []
         let currentStmt;
@@ -305,7 +306,7 @@
             }
         }
 
-        function dragStart(ev) {
+        var dragStart = function(ev) {
             let stmt = ev.target.dataset.statement;
             ev.dataTransfer.dropEffect = "copy";
             ev.dataTransfer.setData("text/plain", stmt);
@@ -360,26 +361,32 @@
         });
 
 
+        var removeStatement = function(step, context) {
+
+            let node = (context  === 'main')? mainList : funcList;
+            let stmt = document.createElement('li');
+
+            stmt.className = 'main__step';
+            stmt.dataset.context = context;
+
+            step.remove();
+            node.appendChild(stmt);
+        }
+
+
         board.addEventListener('dblclick', function(ev) { 
-
+            let funcStmts, funcCalls, context;
             let tgt = ev.target;
-            if (tgt.matches('.main__step')) {
-                let funcStmt, funcCall;
-                let nextEl = tgt.nextElementSibling;
 
-                if (nextEl === null || !nextEl.matches('[data-statement]')) {
-                    tgt.removeAttribute('data-statement');
-                }
+            if (tgt.matches('.main__step[data-statement]')) {
+                
+                removeStatement(tgt, tgt.dataset.context);
+                funcCalls = document.querySelectorAll('.main__algorithm [data-statement="function"]');
+                funcStmts = document.querySelectorAll('.main__function [data-statement]');
 
-                funcCall = document.querySelectorAll('.main__algorithm [data-statement="function"]');
-                funcStmt = document.querySelectorAll('.main__function [data-statement]');
-
-                if (funcStmt.length === 0 && funcCall.length > 0) {
-                    [...funcCall].forEach((call) => {
-                        let step = document.createElement('li');
-                        step.className = 'main__step';
-                        mainList.appendChild(step);
-                        call.remove();
+                if (funcStmts.length === 0 && funcCalls.length > 0) {
+                    [...funcCalls].forEach((funcCall) => {
+                        removeStatement(funcCall, 'main');
                     });
                 }
 
