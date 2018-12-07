@@ -18,7 +18,7 @@
 
 <body>
     
-    <header class="intro">
+    <header class="intro" style="display: none">
         <button id="intro__connect">
             <span lang="it">Connetti</span>
             <span lang="en">Connect</span>
@@ -44,15 +44,16 @@
                     <li class="main__step" data-context="main"></li>
                     <li class="main__step" data-context="main"></li>
                </ul>
-               <button class="main__playbtt" type="submit">Run</button>
+               <button class="main__playbtt" type="submit" 
+                       disabled="disabled">Run</button>
             </div> 
 
             <div class="main__function">
               <ul>
-                  <li class="main__step" data-context="function">1</li>
-                  <li class="main__step" data-context="function">2</li>
-                  <li class="main__step" data-context="function">3</li>
-                  <li class="main__step" data-context="function">4</li>
+                  <li class="main__step" data-context="function"></li>
+                  <li class="main__step" data-context="function"></li>
+                  <li class="main__step" data-context="function"></li>
+                  <li class="main__step" data-context="function"></li>
                </ul>
             </div>
         </form>
@@ -62,22 +63,15 @@
           
             <ul>
               <li class="main__piece">
-                <div class="main__piece--forward" draggable="true" data-statement="forward">
-                    
-                </div></li>
+                <div class="main__piece--forward" draggable="true" data-statement="forward"></div></li>
               <li class="main__piece">
-                <div class="main__piece--left" draggable="true" data-statement="left">
-                    
-                </div></li>
+                <div class="main__piece--function" draggable="true" data-statement="function"></div></li>
               <li class="main__piece">
-                <div class="main__piece--right" draggable="true" data-statement="right">
-                    
-                </div></li>
+                <div class="main__piece--left" draggable="true" data-statement="left"></div></li>
               <li class="main__piece">
-                <div class="main__piece--function" draggable="true" data-statement="function">
-                    
-                </div></li>
+                <div class="main__piece--right" draggable="true" data-statement="right"></div></li>
             </ul>
+
         </aside>
 
     </main>
@@ -103,10 +97,10 @@
             </form>
         </div>
 
-        <!-- <dialog class="dialog dialog--no-algorithm">            
+       <!--  <dialog class="dialog dialog--no-algorithm">            
             <div class="dialog__wrap">
                 <h2>
-                    <span lang="it">Oh-Oh! <br/>Non trovo cubetto</span>
+                    <span lang="it">Oh-Oh! <br/>Non ci sono istruzioni</span>
                     <span lang="en">Uh-Oh! <br/>I can't find cubetto</span>
                 </h2>
             </div>
@@ -129,6 +123,7 @@
         let conn     = document.getElementById('intro__connect');
         let mainList = document.querySelector('.main__algorithm ul');
         let funcList = document.querySelector('.main__function ul');
+        let runBtt   = document.querySelector('.main__playbtt');
         let body     = document.body;
 
         let algorithm = []
@@ -347,8 +342,8 @@
                     }
                 }
 
+
                 /* allow only adjacent drop */
-                console.log(prevEl);
                 if (!!prevEl) {
                     if (!prevEl.matches('[data-statement]')) {
                         return;
@@ -356,7 +351,12 @@
                 }
 
                 tgt.dataset.statement = stmt;
-                //console.log('drop', stmt);    
+
+                /* enable RUN button */
+                mainStmt = document.querySelectorAll('.main__algorithm [data-statement]');
+                if (mainStmt.length) {
+                    runBtt.removeAttribute('disabled');
+                }
             }            
         });
 
@@ -375,7 +375,7 @@
 
 
         board.addEventListener('dblclick', function(ev) { 
-            let funcStmts, funcCalls, context;
+            let funcStmts, funcCalls, mainStmt;
             let tgt = ev.target;
 
             if (tgt.matches('.main__step[data-statement]')) {
@@ -383,11 +383,18 @@
                 removeStatement(tgt, tgt.dataset.context);
                 funcCalls = document.querySelectorAll('.main__algorithm [data-statement="function"]');
                 funcStmts = document.querySelectorAll('.main__function [data-statement]');
+                
 
                 if (funcStmts.length === 0 && funcCalls.length > 0) {
                     [...funcCalls].forEach((funcCall) => {
                         removeStatement(funcCall, 'main');
                     });
+                }
+
+                /* disable RUN button */
+                mainStmt  = document.querySelectorAll('.main__algorithm [data-statement]');
+                if (mainStmt.length === 0) {
+                    runBtt.setAttribute('disabled', 'disabled');
                 }
 
             }
