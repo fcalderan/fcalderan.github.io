@@ -18,18 +18,27 @@
 
 <body>
     
-    <header class="intro" style="display: none">
-        <button id="intro__connect">
-            <span lang="it">Connetti</span>
-            <span lang="en">Connect</span>
-        </button>
+    <header class="header">
+        <form>
+            <button class="header__btt header__btt--settings" type="button">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+                    <path d="M348 327.2v-35.75l-32.44-11.9c-2.82-10.92-6.61-21.22-12.21-30.7l.32-.04 15.44-32.15-25.2-25.27-32.12 15.3-.03.05c-9.47-5.6-19.76-9.16-30.67-11.98L219.2 162h-35.74l-11.92 32.76c-10.9 2.82-21.2 6.77-30.68 12.38l-.05-.25-32.15-15.4-25.27 25.22 15.3 32.12.05.04c-5.6 9.47-11.16 19.77-13.98 30.68L50 291.45v35.75l34.75 11.9c2.82 10.92 7.78 21.22 13.38 30.7l.25.04-15.15 32.15 25.35 25.27 32.19-15.3.06-.04c9.47 5.6 19.78 10.82 30.7 13.65L183.45 460h35.74l11.91-34.43c10.91-2.83 21.21-7.62 30.68-13.22l.05-.17 32.15 15.19 25.27-25.33-15.3-32.18-.04-.06c5.6-9.47 8.83-19.78 11.66-30.69L348 327.2zm-146.68 41.7a59.56 59.56 0 1 1 0-119.14 59.57 59.57 0 0 1 0 119.13z"/>
+                    <path d="M462.24 111.24l-7.82-18.87-20.23 1.02a67.46 67.46 0 0 0-13.41-13.42l.03-.05 1.06-20.32-18.85-7.82-13.63 15.11-.01.03a67.43 67.43 0 0 0-19-.02l-13.62-15.13-18.87 7.82 1.06 20.32a67.26 67.26 0 0 0-13.4 13.46l-.04-.02-20.32-1.05-7.8 18.86 15.1 13.61.04.02c-.73 5.84-1.03 12.66-.13 19.04l-15.2 13.66 7.8 18.87 20.42-1.08a67.7 67.7 0 0 0 13.5 13.38v.03l-1.03 20.3 20.67 7.82 15.44-15.1v-.04c4 .73 10.82.94 17.2.04l12.72 15.11 18.42-7.8-1.28-20.33a67.11 67.11 0 0 0 13.3-13.46l-.03.01 20.29 1.05 7.8-18.86-15.12-13.63-.04-.02c.88-6.22.86-12.58-.05-18.95l15.03-13.59zm-69.33 54.5a34.03 34.03 0 1 1-26.04-62.88 34.03 34.03 0 0 1 26.04 62.88z"/>
+                </svg>
+            </button>
+
+            <button class="header__btt header__btt--connect" type="button">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 588 588">
+                    <path d="M312.48 588.15a39.5 39.5 0 0 1-39.52-39.52V367.86l-150.5 100.12a39.51 39.51 0 1 1-43.77-65.8l162.77-108.32-162.8-107.9a39.53 39.53 0 0 1 43.8-65.81l150.5 100.14V39.53a39.5 39.5 0 0 1 58.18-34.85l154.54 82.77a78.91 78.91 0 0 1 41.35 65.46 78.88 78.88 0 0 1-34.9 69.1l-108.29 72.06L492.1 366.1a78.94 78.94 0 0 1 34.93 69.1 78.9 78.9 0 0 1-41.35 65.46l-154.54 82.8a39.37 39.37 0 0 1-18.66 4.7zM352 367.12v115.5l96.35-51.63L352 367.12zm0-261.93v115.13l96.33-64.1L352 105.2z"/>
+                </svg>
+            </button>
+        </form>
     </header>
 
 
     <main class="main">
 
         <form class="main__board" action="#" method="post">
-
             <div class="main__algorithm">
                 <ul>
                     <li class="main__step" data-context="main"></li>
@@ -43,9 +52,10 @@
                     <li class="main__step" data-context="main"></li>
                     <li class="main__step" data-context="main"></li>
                     <li class="main__step" data-context="main"></li>
-               </ul>
-               <button class="main__playbtt" type="submit" 
+                </ul>
+                <button class="main__run" type="submit" 
                        disabled="disabled">Run</button>
+                
             </div> 
 
             <div class="main__function">
@@ -65,20 +75,22 @@
               <li class="main__piece">
                 <div class="main__piece--forward" draggable="true" data-statement="forward"></div></li>
               <li class="main__piece">
-                <div class="main__piece--function" draggable="true" data-statement="function"></div></li>
-              <li class="main__piece">
                 <div class="main__piece--left" draggable="true" data-statement="left"></div></li>
               <li class="main__piece">
                 <div class="main__piece--right" draggable="true" data-statement="right"></div></li>
-            </ul>
+              <li class="main__piece">
+                <div class="main__piece--function" draggable="true" data-statement="function"></div></li>
+           </ul>
 
+                
+    
         </aside>
 
     </main>
 
     <section class="dialogs">
 
-        <div class="dialog dialog--no-ble-connection">            
+        <div class="dialog dialog--dlg-no-ble-connection">            
             <div class="dialog__wrap">
                 <h2>
                     <span lang="it">Oh-Oh! <br/>Non trovo cubetto</span>
@@ -97,33 +109,62 @@
             </form>
         </div>
 
-       <!--  <dialog class="dialog dialog--no-algorithm">            
+        <div class="dialog dialog--dlg-settings">            
             <div class="dialog__wrap">
                 <h2>
-                    <span lang="it">Oh-Oh! <br/>Non ci sono istruzioni</span>
-                    <span lang="en">Uh-Oh! <br/>I can't find cubetto</span>
+                    <span lang="it">Impostazioni</span>
+                    <span lang="en">Settings</span>
                 </h2>
+                <form >
+                    <fieldset>                        
+                        <input type="text" id="stt_devicename" placeholder="FC-883F" autocomplete="off" />
+                        <label for="stt_devicename">
+                            <span lang="it">Nome device</span>
+                            <span lang="en">Device name</span>
+                        </label>
+                    </fieldset>
+                    <fieldset>
+                        <input type="checkbox" id="stt_reversegear" />
+                        <label for="stt_reversegear">
+                            <span lang="it">Abilita retromarcia <br /><small>
+                            Abilita una singola istruzione di retromarcia di una casella ma sono disponibili solo 3 istruzioni funzione.</small></span>
+                            <span lang="en">Enable reverse gear <br /><small>
+                            Enables a one-time reverse gear instruction for a single case but only 3 function statements are available.</small></span>
+                        </label>
+                    </fieldset>
+                    <fieldset>
+                        <input type="checkbox" id="stt_180turn" />
+                        <label for="stt_180turn">
+                            <span lang="it">Abilita rotazione 180° <br /><small>
+                            Abilita una singola rotazione di 180 gradi ma sono disponibili solo 10 istruzioni principali.</small></span>
+                            <span lang="en">Enable 180° rotation <br /><small>
+                            Enables a one-time 180° rotation instruction but only 10 main statements are available.</small></span>
+                        </label>
+                    </fieldset>
+                <form>
             </div>
             <menu class="dialog__menu">
                 
-                <button class="dialog__btt dialog__btt--close">
+                <button class="dialog__btt dialog__btt--close" type="button">
                     <span lang="it">Chiudi</span>
                     <span lang="en">Close</span>
                 </button>
             </menu>
-        </dialog> -->
+        </div>
         
     </section>
 
 
     <script>
-        let steps    = document.querySelectorAll('.main__step');;
+        let steps    = document.querySelectorAll('.main__step');
         let pieces   = document.querySelector('.main__pieces');  
         let board    = document.querySelector('.main__board');
-        let conn     = document.getElementById('intro__connect');
+        let conn     = document.querySelector('.main__connect');
         let mainList = document.querySelector('.main__algorithm ul');
         let funcList = document.querySelector('.main__function ul');
-        let runBtt   = document.querySelector('.main__playbtt');
+        let runBtt   = document.querySelector('.main__run');
+        let sttBtt   = document.querySelector('.header__btt--settings');
+        let connBtt  = document.querySelector('.header__btt--connect');
         let body     = document.body;
 
         let algorithm = []
@@ -133,7 +174,7 @@
 
 
         const BLE = {
-            name            : 'FC-883F',
+            name            : document.getElementById('stt_devicename').value || 'FC-883F',
             service         : 0xffe0,
             characteristic  : 0xffe1
         };
@@ -252,7 +293,7 @@
 
 
         /* Bluetooth connection handler */
-        conn.addEventListener('click', function(ev) {
+        connBtt.addEventListener('click', function(ev) {
             initBLEConnection();
         });
 
@@ -260,6 +301,12 @@
         /* submit form */
         board.addEventListener('submit', function(ev) {
             ev.preventDefault();
+
+            if (BLECharacteristic === undefined) {
+                body.classList.add('dlg-no-ble-connection');
+                return false;   
+            }
+
 
             let mainStmt = document.querySelectorAll('.main__algorithm [data-statement]');
             let funcStmt = document.querySelectorAll('.main__function [data-statement]');
@@ -269,16 +316,6 @@
 
             algorithm = getAlgorithm(mainStmtArray, mainFuncArray);
 
-
-            if (BLECharacteristic === undefined) {
-                body.classList.add('no-ble-connection');
-                return false;   
-            }
-
-            if (algorithm.length === 0) {
-                body.classList.add('no-algorithm');
-                return false;
-            }
 
             console.table(algorithm);
 
@@ -406,6 +443,10 @@
         function closeDialog() {
             body.className = "";
         }
+
+        sttBtt.addEventListener('click', function() {
+            body.classList.add('dlg-settings');
+        });
 
 
         body.addEventListener('click', function(ev) {
