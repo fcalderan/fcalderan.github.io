@@ -12,7 +12,7 @@
     <link rel="apple-touch-icon" href="icon.png">
     <!-- Place favicon.ico in the root directory -->
 
-    <link rel="stylesheet" href="css/base.min.css">
+    <link rel="stylesheet" href="css/base.css">
     <link href="https://fonts.googleapis.com/css?family=Comfortaa:300,400" rel="stylesheet">
 </head>
 
@@ -69,17 +69,32 @@
         </form>
 
 
-        <aside class="main__pieces">
-          
-            <ul>
-              <li class="main__piece">
-                <div class="main__piece--forward" draggable="true" data-statement="forward"></div></li>
-              <li class="main__piece">
-                <div class="main__piece--left" draggable="true" data-statement="left"></div></li>
-              <li class="main__piece">
-                <div class="main__piece--right" draggable="true" data-statement="right"></div></li>
-              <li class="main__piece">
-                <div class="main__piece--function" draggable="true" data-statement="function"></div></li>
+        <aside class="list__pieces">
+            
+            <h3>
+                <span lang="it">Istruzioni base</span>
+                <span lang="en">Basic instructions</span>
+            </h3>
+            <ul class="main__pieces">
+                <li class="main__piece">
+                    <div class="main__piece--forward" draggable="true" data-statement="forward"></div></li>
+                <li class="main__piece">
+                    <div class="main__piece--left" draggable="true" data-statement="left"></div></li>
+                <li class="main__piece">
+                    <div class="main__piece--right" draggable="true" data-statement="right"></div></li>
+                <li class="main__piece">
+                    <div class="main__piece--function" draggable="true" data-statement="function"></div></li>
+           </ul>
+
+            <h3>
+                <span lang="it">Istruzioni speciali</span>
+                <span lang="en">Special instructions</span>
+            </h3>
+            <ul class="special__pieces">
+                <li class="special__piece">
+                    <div class="special__piece--reverse" draggable="false" data-statement="reverse"></div></li>
+                <li class="special__piece">
+                    <div class="special__piece--180turn" draggable="false" data-statement="180turn"></div></li>
            </ul>
 
                 
@@ -124,21 +139,28 @@
                         </label>
                     </fieldset>
                     <fieldset>
-                        <input type="checkbox" id="stt_reversegear" />
-                        <label for="stt_reversegear">
-                            <span lang="it">Abilita retromarcia <br /><small>
-                            Abilita una singola istruzione di retromarcia di una casella ma sono disponibili solo 3 istruzioni funzione.</small></span>
-                            <span lang="en">Enable reverse gear <br /><small>
-                            Enables a one-time reverse gear instruction for a single case but only 3 function statements are available.</small></span>
+                        <input type="radio" id="stt_basicstmt" name="extrastmt" value="0" checked="checked" />
+                        <label for="stt_basicstmt">
+                            <span lang="it">Istruzioni base<br /><small>
+                            Abilita movimento in avanti, rotazione destra/sinistra con 11 istruzioni principali e 4 istruzioni funzione.</small></span>
+                            <span lang="en">Basic instructions <br /><small>
+                            Enables forward move, right/left rotation with 11 main instructions and 4 function instructions.</small></span>
                         </label>
-                    </fieldset>
-                    <fieldset>
-                        <input type="checkbox" id="stt_180turn" />
+
+                        <input type="radio" id="stt_reverse" name="extrastmt" value="1" />
+                        <label for="stt_reverse">
+                            <span lang="it">Istruzioni base + retromarcia <br /><small>
+                            Aggiunge una singola istruzione di retromarcia di una casella ma sono disponibili solo 3 istruzioni funzione e 10 istruzioni base.</small></span>
+                            <span lang="en">Basic instructions + reverse gear <br /><small>
+                            Adds a one-time reverse gear instruction for a single case but only 3 function instructions and 10 main instructions are available.</small></span>
+                        </label>
+                    
+                        <input type="radio" id="stt_180turn" name="extrastmt" value="2" />
                         <label for="stt_180turn">
-                            <span lang="it">Abilita rotazione 180° <br /><small>
-                            Abilita una singola rotazione di 180 gradi ma sono disponibili solo 10 istruzioni principali.</small></span>
-                            <span lang="en">Enable 180° rotation <br /><small>
-                            Enables a one-time 180° rotation instruction but only 10 main statements are available.</small></span>
+                            <span lang="it">Istruzioni base + rotazione 180° <br /><small>
+                            Aggunge una singola rotazione di 180 gradi ma sono disponibili solo 9 istruzioni principali.</small></span>
+                            <span lang="en">Basic instructions + 180° rotation <br /><small>
+                            Adds a one-time 180° rotation instruction but only 9 main statements are available.</small></span>
                         </label>
                     </fieldset>
                 <form>
@@ -157,7 +179,7 @@
 
     <script>
         let steps    = document.querySelectorAll('.main__step');
-        let pieces   = document.querySelector('.main__pieces');  
+        let pieces   = document.querySelector('.list__pieces');  
         let board    = document.querySelector('.main__board');
         let conn     = document.querySelector('.main__connect');
         let mainList = document.querySelector('.main__algorithm ul');
@@ -166,6 +188,8 @@
         let sttBtt   = document.querySelector('.header__btt--settings');
         let connBtt  = document.querySelector('.header__btt--connect');
         let body     = document.body;
+
+        let currentMode = 0;
 
         let algorithm = []
         let currentStmt;
@@ -189,7 +213,9 @@
                         'forward'  : 1,
                         'left'     : 2,
                         'right'    : 3,
-                        'function' : 4
+                        'function' : 4,
+                        '180turn'  : 5,
+                        'reverse'  : 6
                     }[s.dataset.statement]
                 }
             })
@@ -332,7 +358,7 @@
         /* drag and drop pieces */
 
         var dragHandler = function(ev, dragEvent) {
-            if (ev.target.matches('[draggable]')) {
+            if (ev.target.matches('[draggable="true"]')) {
                 ev.stopPropagation();
                 return dragEvent(ev);
             }
@@ -394,6 +420,17 @@
                 if (mainStmt.length) {
                     runBtt.removeAttribute('disabled');
                 }
+                console.log(!!document.querySelector('.main__board [data-statement="reverse"]'));
+
+                /* disable special instructions after single usage */
+                if (!!document.querySelector('.main__board [data-statement="reverse"]')) {
+                    
+                    document.querySelector('.list__pieces [data-statement="reverse"]').setAttribute('draggable', false);
+                }                
+                if (!!document.querySelector('.main__board [data-statement="180turn"]')) {
+                    document.querySelector('.list__pieces [data-statement="180turn"]').setAttribute('draggable', false);
+                } 
+
             }            
         });
 
@@ -428,6 +465,16 @@
                     });
                 }
 
+
+                /* enable special instructions after single usage */
+                if (!document.querySelector('.main__board [data-statement="reverse"]') && body.classList.contains('stt_reverse')) {
+                    
+                    document.querySelector('.list__pieces [data-statement="reverse"]').setAttribute('draggable', true);
+                }                
+                if (!document.querySelector('.main__board [data-statement="180turn"]') && body.classList.contains('stt_turn180')) {
+                    document.querySelector('.list__pieces [data-statement="180turn"]').setAttribute('draggable', true);
+                }                 
+
                 /* disable RUN button */
                 mainStmt  = document.querySelectorAll('.main__algorithm [data-statement]');
                 if (mainStmt.length === 0) {
@@ -441,7 +488,46 @@
 
         /*** Modals ***/
         function closeDialog() {
-            body.className = "";
+
+            let stt_reverse = document.getElementById('stt_reverse');
+            let stt_turn180 = document.getElementById('stt_180turn');
+            let selectedMode = 0;
+            
+            let reverse = document.querySelector('.special__piece--reverse');
+            let turn180 = document.querySelector('.special__piece--180turn');
+
+            /* close dialogs */
+            body.classList.remove('dlg-settings');
+            body.classList.remove('dlg-no-ble-connection');
+
+            /* check for stmt settings */
+            reverse.setAttribute('draggable', stt_reverse.checked);
+            turn180.setAttribute('draggable', stt_turn180.checked);
+
+            if (stt_reverse.checked) {
+                body.classList.add('stt_reverse');
+                selectedMode = 1;
+            }
+            else {
+                body.classList.remove('stt_reverse');
+
+            }
+
+            if (stt_turn180.checked) {
+                body.classList.add('stt_turn180');
+                selectedMode = 2;
+            }
+            else {
+                body.classList.remove('stt_turn180');
+            }
+
+            if (selectedMode !== currentMode) {
+                /* reset board */
+                [...steps].forEach((s) => {
+                    s.removeAttribute('data-statement');
+                });
+                currentMode = selectedMode;
+            }
         }
 
         sttBtt.addEventListener('click', function() {
