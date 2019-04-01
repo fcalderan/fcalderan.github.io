@@ -1,47 +1,6 @@
-@charset "UTF-8";
 /**
  * Remove in production environment
  */
-body:before {
-  background-color: #FCF8E3;
-  border-bottom: 1px solid #FBEED5;
-  border-left: 1px solid #FBEED5;
-  color: #C09853;
-  font: small-caption;
-  padding: 3px 6px;
-  pointer-events: none;
-  position: fixed;
-  right: 0;
-  top: 0;
-  z-index: 100; }
-  @media (min-width: 20em) {
-    body:before {
-      content: "mob-s ≥ 320px (20em)"; } }
-  @media (min-width: 30em) {
-    body:before {
-      content: "mob-m ≥ 480px (30em)"; } }
-  @media (min-width: 40em) {
-    body:before {
-      content: "mob-l ≥ 640px (40em)"; } }
-  @media (min-width: 48em) {
-    body:before {
-      content: "tab-s ≥ 768px (48em)"; } }
-  @media (min-width: 55em) {
-    body:before {
-      content: "tab-m ≥ 880px (55em)"; } }
-  @media (min-width: 64em) {
-    body:before {
-      content: "tab-l ≥ 1024px (64em)"; } }
-  @media (min-width: 80em) {
-    body:before {
-      content: "des-s ≥ 1280px (80em)"; } }
-  @media (min-width: 90em) {
-    body:before {
-      content: "des-m ≥ 1440px (90em)"; } }
-  @media (min-width: 105em) {
-    body:before {
-      content: "des-l ≥ 1680px (105em)"; } }
-
 @font-face {
   font-family: Comfortaa;
   src: url("Comfortaa-regular.ttf"); }
@@ -469,11 +428,10 @@ body {
     opacity: .25; } }
 
 /* user mode */
-.stt_reverse .main__function li:nth-last-child(-n + 1),
 .stt_reverse .main__algorithm li:nth-last-child(-n + 1) {
   visibility: hidden; }
 
-.stt_turn180 .main__algorithm li:nth-last-child(-n + 2) {
+.stt_turn180 .main__function li:nth-last-child(-n + 1) {
   visibility: hidden; }
 
 /* l10n */

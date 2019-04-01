@@ -13,11 +13,12 @@
     <!-- Place favicon.ico in the root directory -->
 
     <link rel="stylesheet" href="css/base.css">
+    <link rel="stylesheet" media="print" href="css/print.css">
     <link href="https://fonts.googleapis.com/css?family=Comfortaa:300,400" rel="stylesheet">
 </head>
 
 <body>
-    
+
     <header class="header">
         <form>
             <button class="header__btt header__btt--settings" type="button">
@@ -142,25 +143,25 @@
                         <input type="radio" id="stt_basicstmt" name="extrastmt" value="0" checked="checked" />
                         <label for="stt_basicstmt">
                             <span lang="it">Istruzioni base<br /><small>
-                            Abilita movimento in avanti, rotazione destra/sinistra con 11 istruzioni principali e 4 istruzioni funzione.</small></span>
+                            Abilita movimento in avanti, rotazione destra/sinistra con 11 istruzioni base e 4 istruzioni funzione.</small></span>
                             <span lang="en">Basic instructions <br /><small>
-                            Enables forward move, right/left rotation with 11 main instructions and 4 function instructions.</small></span>
+                            Enables forward move, right/left rotation with 11 basic instructions and 4 function instructions.</small></span>
                         </label>
 
                         <input type="radio" id="stt_reverse" name="extrastmt" value="1" />
                         <label for="stt_reverse">
                             <span lang="it">Istruzioni base + retromarcia <br /><small>
-                            Aggiunge una singola istruzione di retromarcia di una casella ma sono disponibili solo 3 istruzioni funzione e 10 istruzioni base.</small></span>
+                            Aggiunge una singola istruzione di retromarcia di una casella ma sono disponibili solo 10 istruzioni base</small></span>
                             <span lang="en">Basic instructions + reverse gear <br /><small>
-                            Adds a one-time reverse gear instruction for a single case but only 3 function instructions and 10 main instructions are available.</small></span>
+                            Adds a one-time reverse gear instruction for a single case but only 10 main instructions are available.</small></span>
                         </label>
                     
                         <input type="radio" id="stt_180turn" name="extrastmt" value="2" />
                         <label for="stt_180turn">
                             <span lang="it">Istruzioni base + rotazione 180° <br /><small>
-                            Aggunge una singola rotazione di 180 gradi ma sono disponibili solo 9 istruzioni principali.</small></span>
+                            Aggunge una singola rotazione di 180 gradi ma sono disponibili solo 3 istruzioni funzione.</small></span>
                             <span lang="en">Basic instructions + 180° rotation <br /><small>
-                            Adds a one-time 180° rotation instruction but only 9 main statements are available.</small></span>
+                            Adds a one-time 180° rotation instruction but only 3 function statements are available.</small></span>
                         </label>
                     </fieldset>
                 <form>
