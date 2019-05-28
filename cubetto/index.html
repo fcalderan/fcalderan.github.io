@@ -303,6 +303,9 @@
                     console.info("Executing", currentStmt.data);
                     BLECharacteristic.writeValue(Uint8Array.of(currentStmt.data));
                 }
+                else {
+                    runBtt.removeAttribute('disabled');
+                }
             
             }
         };
@@ -347,6 +350,10 @@
             console.table(algorithm);
 
             if (algorithm.length) {
+                runBtt.setAttribute('disabled', 'disabled');
+                setTimeout(() => {
+                    runBtt.removeAttribute('disabled');
+                }, 5000);
                 currentStmt = algorithm.shift();
                 console.info("Executing", currentStmt.data);
                 blinkStmt(currentStmt);
