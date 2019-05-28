@@ -644,3 +644,12 @@ h2 {
 
 button {
   font-size: 1rem; }
+
+.main__board, .dialogs, .list__pieces h3 {
+  -webkit-user-select: none;
+  /* Chrome all / Safari all */
+  -moz-user-select: none;
+  /* Firefox all */
+  -ms-user-select: none;
+  /* IE 10+ */
+  user-select: none; }

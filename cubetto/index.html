@@ -421,8 +421,7 @@
                 if (mainStmt.length) {
                     runBtt.removeAttribute('disabled');
                 }
-                console.log(!!document.querySelector('.main__board [data-statement="reverse"]'));
-
+                
                 /* disable special instructions after single usage */
                 if (!!document.querySelector('.main__board [data-statement="reverse"]')) {
                     
@@ -484,6 +483,37 @@
 
             }
 
+        });
+
+
+        pieces.addEventListener('dblclick', function(evt) {
+            let funcStmt = document.querySelectorAll('.main__function [data-statement]');
+            let mainSlot = (!!mainList.querySelectorAll('[data-statement]').length)
+                ? mainList.querySelector('li[data-statement] + li:not([data-statement])')
+                : mainList.querySelector('li:first-child');
+
+            let stmt, tgt   = evt.target;
+
+            console.log(mainSlot);
+            if (tgt.matches('div') && !!mainSlot) {
+
+                stmt = tgt.dataset.statement;
+
+                /* if the statement is 'function' and the target element is
+                 * a step inside the function flow then we need to forbid this 
+                 * action because it lead to an infinite recursion 
+                 * Also we can't choose a function until the body of the function is empty
+              */
+                if (stmt === 'function') {
+                    if (tgt.closest('.main__function') || funcStmt.length === 0) {
+                        return;
+                    }
+                }
+
+                mainSlot.dataset.statement = stmt;
+                runBtt.removeAttribute('disabled');
+
+            }
         });
 
 
