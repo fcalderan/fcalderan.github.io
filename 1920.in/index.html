@@ -43,10 +43,15 @@ p {
       <a href="javascript:(() => { let parent, phone, text, bold; let walink = document.createElement('a'); walink.target='_blank'; walink.id='walink'; walink.href='#'; walink.textContent='Whatsapp quick link'; walink.title='Bookmarklet made by @fcalderan'; walink.style='color:inherit;font-size:1rem;margin:20px auto;display:block;border:1px solid currentColor;padding:20px;width:fit-content;'; parent = document.querySelector('.proclamation'); bold = document.querySelector('.proclamation .bold'); parent.insertBefore(walink, bold); phone = document.querySelector('a[href^=sms]'); text = document.getElementById('message'); walink.setAttribute('href', `https://api.whatsapp.com/send/?phone=${phone.textContent.replace('+', '') }&text=${text.textContent.trim() }`); document.body.addEventListener('click', (ev) => { if (!(ev.target.matches('#buttonReload') || ev.target.matches('#buttonTextReload') || ev.target.matches('#buttonTextReload *'))) { return false; } setTimeout(() => {  text = document.getElementById('message'); phone = document.querySelector('a[href^=sms]'); walink = document.getElementById('walink'); walink.setAttribute('href', `https://api.whatsapp.com/send/?phone=${phone.textContent.replace('+', '') }&text=${text.textContent.trim() }`)}, 300); }) })();">1920.in - Whatsapp quick link</a>
   
       <ol>
-        <li>Drag the link above in your bookmarks bar</li>
-        <li>Go to 1920.in and compose your message</li>
-        <li>Click the bookmark you've just saved. A new dynamic link will appear in the page. Every time you generate a new number or a new text, the link will be automatically updated</li>
+        <li>Save the link above in your bookmarks bar;</li>
+        <li>Go to 1920.in site and compose your message;</li>
+        <li>Click the bookmark you've just saved. </li>
       </ol>
+    
+      <p>
+         A new dynamic link will appear in the page. Every time you generate a new number or a new text, the link will be automatically updated with the new content.    
+        
+      </p>
     
       <p>
         Peace for Ukraine.<br/ ><span aria-label="Ukrainian flag">🇺🇦</span>
