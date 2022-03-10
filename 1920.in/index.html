@@ -7,20 +7,20 @@
     <link rel="stylesheet" media="screen" href="https://fonts.googleapis.com/css2?family=Lato:wght@300&amp;display=swap" />
     <style>
       
-      a, a:link,a:visited {
-  color: #9bc;
-}
+  a, a:link,a:visited, h2 {
+     color: #9bc;
+    text-underline-offset: .4rem;
+  }
       
-a[href^="javascript"] {
+a[href^="javascript"], h2 {
   display: block;
   font: 2rem/1.3 'Hachi Maru Pop', cursive;
   width: fit-content;
   padding: 0 1.5rem;
-  text-underline-offset: .4rem;
   margin:2rem auto 0 auto;
 }
 
-:not(:is(a[href^="javascript"])) {
+:not(:is(a[href^="javascript"], h2)) {
     font-family: 'Lato', system-ui;
     color: #313238;
 }
